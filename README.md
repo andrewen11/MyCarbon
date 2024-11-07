@@ -1,8 +1,8 @@
-#MyCarbon
-##Repository for the upcoming project MyCarbon, a carbon footprint measurement, object-oriented app.
-###Designed and developed by second-year students from the National University of Science and Technology "Politehnica" of Bucharest, Faculty of Automatic Control and Computer Science - System Engineering (Automatic Control) field.
+# MyCarbon
+## Repository for the upcoming project MyCarbon, a carbon footprint measurement, object-oriented app.
+### Designed and developed by second-year students from the National University of Science and Technology "Politehnica" of Bucharest, Faculty of Automatic Control and Computer Science - System Engineering (Automatic Control) field.
 
-###UPDATE 1 - NOVEMBER 1, 2024
+### UPDATE 1 - NOVEMBER 1, 2024
 - GitHub repository created.
 - First brainstorming session held.
 - Each member now has a specific role in the project:
@@ -12,7 +12,7 @@
 - The entire app will be developed in C++ (covering both design and coding functionalities).
 
   
-###UPDATE 2 - NOVEMBER 7, 2024
+### UPDATE 2 - NOVEMBER 7, 2024
 - Submitted the first bi-weekly project development report.
 - Completed the first stage of design development (layout of the main menu and related functionalities) (1/3 - Design).
 - Currently working on setting up parameters for carbon footprint calculations and implementing object/class structures (0.5/3 - Functionalities).
