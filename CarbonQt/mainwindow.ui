@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+      <string>
+          background-color: #000000;  <!-- Light grey background -->
+          color: white;  <!-- White text color -->
+      </string>
+  </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <property name="styleSheet">
+       <string>
+           QTabWidget::pane { border: 0; }
+           QTabBar::tab {
+               background-color: #ffffff;  /* Dark background for tab */
+               color: black;  /* Tab text color (black) */
+               padding: 10px;
+           }
+           QTabBar::tab:selected {
+               background-color: #3C3939;  /* Slightly lighter background for selected tab */
+               color: white;  /* Text color for selected tab (white) */
+           }
+           QTabBar::tab:hover {
+               background-color: #f2f2f2;  /* Hover effect for tab */
+           }
+           /* Keep content inside tabs white */
+           QTabWidget {
+               background-color: #ffffff;
+               color: black;  /* White text color inside tabs */
+           }
+       </string>
+   </property>
+   <widget class="QWidget" name="homeTab">
+    <attribute name="title">
+     <string>Home</string>
+    </attribute>
+    <widget class="QLabel" name="electrictyLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>200</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Electricity consumption</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="electricityInput">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>20</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="gasLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>200</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Gas consumption</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="gasInput">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>60</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="waterLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>100</y>
+       <width>200</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Water consumption</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="waterInput">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>100</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="woodLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>140</y>
+       <width>200</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Wood consumption</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="woodInput">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>140</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="foodTab">
+    <attribute name="title">
+     <string>Food</string>
+    </attribute>
+    <widget class="QLabel" name="beefLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>200</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Beef consumption</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="beefInput">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>20</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="eggLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>200</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Egg consumption</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="eggInput">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>60</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lambLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>100</y>
+       <width>200</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Lamb consumption</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lambInput">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>100</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="porkLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>140</y>
+       <width>200</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Pork consumption</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="porkInput">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>140</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="humanTab">
+    <attribute name="title">
+     <string>Human</string>
+    </attribute>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
