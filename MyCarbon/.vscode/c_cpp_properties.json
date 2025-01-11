@@ -4,7 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Users/Cristian/asio/asio/include"
+                "./asio/asio/include"
             ],
             "defines": [
                 "_DEBUG",
