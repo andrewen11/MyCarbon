@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="/">
+    <file>images/carbon_footprint.jpg</file>
+  </qresource>
+</RCC>
