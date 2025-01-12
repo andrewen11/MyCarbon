@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUI();
     setWindowTitle("Calculator Amprentă de Carbon");
-    setMinimumSize(600, 400);
+    setMinimumSize(600, 600);
 
     // Aplicăm un stylesheet global pentru MainWindow
     this->setStyleSheet(
