@@ -12,6 +12,43 @@ MainWindow::MainWindow(QWidget *parent)
     setupUI();
     setWindowTitle("Calculator Amprentă de Carbon");
     setMinimumSize(600, 400);
+
+    // Aplicăm un stylesheet global pentru MainWindow
+    this->setStyleSheet(
+        "QMainWindow {"
+        "    background-color: #e8f5e9;"  // Fundal deschis verde
+        "    color: #2e7d32;"  // Text verde închis
+        "}"
+        "QPushButton {"
+        "    background-color: #4caf50;"
+        "    border: none;"
+        "    color: white;"
+        "    font-size: 14px;"
+        "    padding: 10px;"
+        "    border-radius: 5px;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #388e3c;"
+        "}"
+        "QLabel {"
+        "    font-size: 16px;"
+        "    font-weight: bold;"
+        "    color: #2e7d32;"
+        "}"
+        "QLineEdit {"
+        "    border: 1px solid #a5d6a7;"
+        "    border-radius: 5px;"
+        "    padding: 5px;"
+        "    font-size: 14px;"
+        "}"
+        "QComboBox {"
+        "    border: 1px solid #a5d6a7;"
+        "    border-radius: 5px;"
+        "    padding: 5px;"
+        "    font-size: 14px;"
+        "    background-color: white;"
+        "}"
+        );
 }
 
 MainWindow::~MainWindow() {}
@@ -20,7 +57,14 @@ void MainWindow::setupUI() {
     QWidget *centralWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
-    // Create buttons for navigation
+    // Creăm un titlu frumos pentru aplicație
+    QLabel *titleLabel = new QLabel("Calculator Amprentă de Carbon", this);
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setStyleSheet("font-size: 24px; font-weight: bold; margin-bottom: 20px;");
+
+    mainLayout->addWidget(titleLabel);
+
+    // Layout pentru butoane
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     QPushButton *individualButton = new QPushButton("Individual", this);
     QPushButton *houseButton = new QPushButton("Casă", this);
@@ -32,7 +76,7 @@ void MainWindow::setupUI() {
 
     mainLayout->addLayout(buttonLayout);
 
-    // Create stacked widget
+    // Creăm widget-ul pentru pagini
     stackedWidget = new QStackedWidget(this);
     stackedWidget->addWidget(createIndividualPage());
     stackedWidget->addWidget(createHousePage());
@@ -40,7 +84,7 @@ void MainWindow::setupUI() {
 
     mainLayout->addWidget(stackedWidget);
 
-    // Connect signals
+    // Conectăm semnalele
     connect(individualButton, &QPushButton::clicked, this, &MainWindow::showIndividualPage);
     connect(houseButton, &QPushButton::clicked, this, &MainWindow::showHousePage);
     connect(dietButton, &QPushButton::clicked, this, &MainWindow::showDietPage);
@@ -52,6 +96,7 @@ QWidget* MainWindow::createIndividualPage() {
     individualPage = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(individualPage);
 
+    // Elemente
     breathsEdit = new QLineEdit();
     distanceEdit = new QLineEdit();
     transportTypeCombo = new QComboBox();
