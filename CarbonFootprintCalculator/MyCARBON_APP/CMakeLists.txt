@@ -31,6 +31,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         startwindow.h
         startwindow.cpp
         resources.qrc
+        credentialswindow.h
+        credentialswindow.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CarbonFootprintCalculator APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

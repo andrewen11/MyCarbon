@@ -1,65 +1,105 @@
-// startwindow.cpp
 #include "startwindow.h"
-#include <QVBoxLayout>
 #include <QPixmap>
-#include <QWidget>
-#include <QApplication>
+#include <QPushButton>
 #include <QScreen>
-#include <QPalette>
+#include <QApplication>
 
 StartWindow::StartWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    // Setăm dimensiunea ferestrei
-    resize(800, 600);
+    resize(800, 500);
+    setMinimumSize(800, 500); // Dimensiunea minimă
 
-    // Creăm un widget central
-    QWidget *centralWidget = new QWidget(this);
-    setCentralWidget(centralWidget);
-
-    // Creăm layout-ul principal
-    QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
-
-    // Adăugăm label-ul pentru imagine
+    // Creăm label-ul pentru imagine care acoperă întreaga fereastră
     backgroundLabel = new QLabel(this);
+    backgroundLabel->setGeometry(0, 0, width(), height()); // Setați inițial dimensiunea să acopere întreaga fereastră
 
     // Încărcăm imaginea (înlocuiește cu calea către imaginea ta)
-    QPixmap background(":/images/carbon_footprint.jpg");
+    QPixmap background(":/images/carbon_footprint.png");
     if (!background.isNull()) {
-        // Scalăm imaginea să se potrivească cu fereastra păstrând aspectul
-        backgroundLabel->setPixmap(background.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        backgroundLabel->setAlignment(Qt::AlignCenter);
+        // Scalăm imaginea să acopere întreaga fereastră ignorând raportul de aspect
+        backgroundLabel->setPixmap(background.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     }
 
     // Creăm butonul de start
     startButton = new QPushButton("Start Calculator", this);
-    startButton->setFixedSize(200, 50);
+    startButton->setFixedSize(150, 35);
     startButton->setStyleSheet(
         "QPushButton {"
         "    background-color: #4CAF50;"
         "    border: none;"
         "    color: white;"
-        "    padding: 5px 10px;"
-        "    text-align: center;"
-        "    text-decoration: none;"
         "    font-size: 16px;"
-        "    margin: 4px 2px;"
-        "    border-radius: 10px;"
+        "    border-radius: 15px;"
         "}"
         "QPushButton:hover {"
         "    background-color: #45a049;"
         "}"
         );
 
-    // Adăugăm widget-urile în layout
-    mainLayout->addWidget(backgroundLabel);
-    mainLayout->addWidget(startButton, 0, Qt::AlignCenter);
+    // Creăm butonul pentru credentiale
+    credentialsButton = new QPushButton("Credits", this);
+    credentialsButton->setFixedSize(150, 35);
+    credentialsButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #4CAF50;" // Aceeași culoare ca și Start Calculator
+        "    border: none;"
+        "    color: white;"
+        "    font-size: 16px;"
+        "    border-radius: 15px;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #45a049;"
+        "}"
+        );
 
-    // Conectăm semnalul clicked al butonului
+    // Calculăm coordonatele pentru poziționarea centrală
+    int totalWidth = startButton->width() + credentialsButton->width() + 10; // Spațiu între butoane
+    int baseX = (width() - totalWidth) / 2; // Punctul de start pentru ambele butoane
+    int buttonY = height() - startButton->height() - 20;
+
+    // Poziționăm butoanele
+    startButton->move(baseX, buttonY);
+    credentialsButton->move(baseX + startButton->width() + 20, buttonY); // Lângă Start Calculator
+
+    // Conectăm semnalul clicked al butoanelor
     connect(startButton, &QPushButton::clicked, this, &StartWindow::startApplication);
 
+    connect(credentialsButton, &QPushButton::clicked, this, [this]() {
+        // Salvează geometria și starea curentă
+        savedGeometry = geometry();
+        isFullscreen = isFullScreen();
+
+        // Creăm fereastra de credentiale
+        credentialsWindow = new CredentialsWindow(this);
+
+        // Aplicăm geometria și starea la CredentialsWindow
+        if (isFullscreen) {
+            credentialsWindow->showFullScreen();
+        } else {
+            credentialsWindow->setGeometry(savedGeometry);
+            credentialsWindow->show();
+        }
+
+        // Conectăm semnalul pentru întoarcerea la fereastra principală
+        connect(credentialsWindow, &CredentialsWindow::backToStart, this, [this]() {
+            credentialsWindow->close();
+
+            // Restaurăm geometria și starea la StartWindow
+            if (isFullscreen) {
+                showFullScreen();
+            } else {
+                setGeometry(savedGeometry);
+                show();
+            }
+        });
+
+        // Ascundem fereastra principală
+        this->hide();
+    });
+
     // Setăm titlul ferestrei
-    setWindowTitle("Calculator Amprentă de Carbon");
+    setWindowTitle("My Carbon App");
 
     // Centrăm fereastra pe ecran
     QScreen *screen = QGuiApplication::primaryScreen();
@@ -68,6 +108,33 @@ StartWindow::StartWindow(QWidget *parent)
     int y = (screenGeometry.height() - height()) / 2;
     move(x, y);
 }
+
+void StartWindow::resizeEvent(QResizeEvent *event) {
+    QMainWindow::resizeEvent(event);
+
+    // Actualizăm dimensiunea imaginii să acopere întreaga fereastră
+    QPixmap background(":/images/carbon_footprint.png");
+    if (!background.isNull()) {
+        backgroundLabel->setPixmap(background.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    }
+    backgroundLabel->setGeometry(0, 0, width(), height());
+
+    // Redimensionăm butoanele proporțional cu dimensiunea ferestrei (dar cu limită minimă și maximă)
+    int buttonWidth = std::max(130, std::min(150, width() / 8));  // Minimum 130 px, maximum 150 px
+    int buttonHeight = std::max(30, std::min(40, height() / 15)); // Minimum 30 px, maximum 40 px
+    startButton->setFixedSize(buttonWidth, buttonHeight);
+    credentialsButton->setFixedSize(buttonWidth, buttonHeight);
+
+    // Calculăm coordonatele pentru poziționarea centrală
+    int totalWidth = startButton->width() + credentialsButton->width() + 20; // Spațiu de 20 px între butoane
+    int baseX = (width() - totalWidth) / 2; // Punctul de start pentru primul buton
+    int buttonY = height() - startButton->height() - 20;
+
+    // Repoziționăm butoanele
+    startButton->move(baseX, buttonY);
+    credentialsButton->move(baseX + startButton->width() + 20, buttonY); // Lângă Start Calculator
+}
+
 
 void StartWindow::startApplication()
 {

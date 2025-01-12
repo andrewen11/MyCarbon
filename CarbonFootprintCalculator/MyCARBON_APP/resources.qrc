@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
-    <file>images/carbon_footprint.jpg</file>
+    <file>images/carbon_footprint.png</file>
+    <file>images/credentials_background.png</file>
   </qresource>
 </RCC>
