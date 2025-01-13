@@ -61,7 +61,7 @@ void MainWindow::setupUI() {
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
     // Creăm un titlu frumos pentru aplicație
-    QLabel *titleLabel = new QLabel("Carbon Footbrint Calculator", this);
+    QLabel *titleLabel = new QLabel("Carbon Footprint Calculator", this);
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setStyleSheet("font-size: 24px; font-weight: bold; margin-bottom: 20px;");
 
