@@ -14,11 +14,24 @@ const double EMISIE_RESPIRATIE = 0.04 * 1.96 / 1000; // kg CO2/respirație
 const double EMISIE_AUTO = 0.120; // kg CO2 per km pentru mașină personală
 const double EMISIE_TRANSPORT_PUBLIC = 0.060; // kg CO2 per km pentru autobuz
 
+// Detailed vehicle emission factors (kg CO2/km)
+namespace EmisieCombustibil {
+constexpr double BENZINA = 0.120;    // Average gasoline car
+constexpr double MOTORINA = 0.140;   // Average diesel car
+constexpr double ELECTRICA = 0.050;  // Electric car (including power generation)
+constexpr double GPL = 0.090;        // LPG car
+}
+
+// Detailed public transport emission factors (kg CO2/passenger-km)
+namespace EmisieTransportPublic {
+constexpr double TREN = 0.035;      // Train (electric)
+constexpr double METROU = 0.028;    // Metro
+constexpr double AUTOBUZ = 0.068;   // Bus (diesel)
+constexpr double TROLEIBUZ = 0.025; // Trolleybus (electric)
+constexpr double AVION = 0.285;     // Domestic flight
+}
+
 // Copiază enumerările
-enum TipTransport {
-    MASINA_PERSONALA,
-    TRANSPORT_COMUN
-};
 
 enum TipLocuinta {
     GARSONIERA,
@@ -30,6 +43,28 @@ enum TipRegim {
     VEGAN,
     VEGETARIAN,
     OMNIVOR
+};
+
+enum TipCombustibil {
+    BENZINA,
+    MOTORINA,
+    ELECTRICA,
+    GPL
+};
+
+enum TipTransportPublic {
+    TREN,
+    METROU,
+    AUTOBUZ,
+    TROLEIBUZ,
+    AVION
+};
+
+enum TipTransport {
+    MASINA_PERSONALA,
+    TRANSPORT_COMUN,
+    BICICLETA,
+    TROTINETA
 };
 
 // Copiază clasele (Casa, RegimAlimentar, Persoana)
@@ -131,42 +166,72 @@ public:
 };
 
 class Persoana {
-private:
-    int respiratiiPeMinut;
-    double kmTransport; // kilometri parcursi zilnic
-    TipTransport tipTransport; // tipul de transport folosit
-
 public:
-    // Constructor
-    Persoana(int respiratiiPeMinut, double kmTransport, TipTransport tipTransport) {
-        this->respiratiiPeMinut = respiratiiPeMinut;
-        this->kmTransport = kmTransport;
-        this->tipTransport = tipTransport;
-    }
+    Persoana(int breaths, double distance, TipTransport transport,
+             TipCombustibil combustibil = TipCombustibil::BENZINA,
+             TipTransportPublic transportPublic = TipTransportPublic::TREN)
+        : m_breaths(breaths), m_distance(distance), m_transport(transport),
+        m_combustibil(combustibil), m_transportPublic(transportPublic) {}
 
-    // Calcul amprenta de carbon pentru transport
-    double transportAC() {
-        double coeficientTransport = 0.0;
-
-        // Alege coeficientul în funcție de tipul de transport
-        if (tipTransport == MASINA_PERSONALA) {
-            coeficientTransport = EMISIE_AUTO;
-        } else if (tipTransport == TRANSPORT_COMUN) {
-            coeficientTransport = EMISIE_TRANSPORT_PUBLIC;
-        }
-
-        return kmTransport * coeficientTransport * 12; // Calcul anual
-    }
-
-    // Calcul amprenta de carbon pentru respirație
-    double calculAC() {
-        return respiratiiPeMinut * 1440 * EMISIE_RESPIRATIE * 12; // Calcul anual
-    }
-
-    // Calcul total
-    double calculTotalAC() {
+    double calculTotalAC() const {
         return calculAC() + transportAC();
     }
+
+private:
+    double transportAC() const {
+        double coeficient = 0.0;
+
+        if (m_transport == TipTransport::MASINA_PERSONALA) {
+            switch (m_combustibil) {
+            case TipCombustibil::BENZINA:
+                coeficient = EmisieCombustibil::BENZINA;
+                break;
+            case TipCombustibil::MOTORINA:
+                coeficient = EmisieCombustibil::MOTORINA;
+                break;
+            case TipCombustibil::ELECTRICA:
+                coeficient = EmisieCombustibil::ELECTRICA;
+                break;
+            case TipCombustibil::GPL:
+                coeficient = EmisieCombustibil::GPL;
+                break;
+            }
+        } else if (m_transport == TipTransport::TRANSPORT_COMUN) {
+            switch (m_transportPublic) {
+            case TipTransportPublic::TREN:
+                coeficient = EmisieTransportPublic::TREN;
+                break;
+            case TipTransportPublic::METROU:
+                coeficient = EmisieTransportPublic::METROU;
+                break;
+            case TipTransportPublic::AUTOBUZ:
+                coeficient = EmisieTransportPublic::AUTOBUZ;
+                break;
+            case TipTransportPublic::TROLEIBUZ:
+                coeficient = EmisieTransportPublic::TROLEIBUZ;
+                break;
+            case TipTransportPublic::AVION:
+                coeficient = EmisieTransportPublic::AVION;
+                break;
+            }
+        }
+        // Bicicleta și Trotineta au emisii 0
+
+        // Calculăm emisiile anuale: km/zi * emisii/km * 365 zile
+        return m_distance * coeficient * 365;
+    }
+
+    double calculAC() const {
+        // Calculăm emisiile anuale din respirație:
+        // respirații/min * 60 min * 24 ore * 365 zile * emisii/respirație
+        return m_breaths * 60 * 24 * 365 * EMISIE_RESPIRATIE;
+    }
+
+    int m_breaths;
+    double m_distance;
+    TipTransport m_transport;
+    TipCombustibil m_combustibil;
+    TipTransportPublic m_transportPublic;
 };
 
 #endif // CARBON_CLASSES_H

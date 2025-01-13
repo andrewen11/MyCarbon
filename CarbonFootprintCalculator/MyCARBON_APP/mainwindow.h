@@ -22,19 +22,26 @@ private slots:
     void calculateIndividual();
     void calculateHouse();
     void calculateDiet();
+    void onTransportTypeChanged(int index);
 
 private:
+
     QStackedWidget *stackedWidget;
 
-    // Individual page widgets
+    // Page widgets
     QWidget *individualPage;
+    QWidget *housePage;
+    QWidget *dietPage;
+
+    // Individual page controls
     QLineEdit *breathsEdit;
     QLineEdit *distanceEdit;
     QComboBox *transportTypeCombo;
+    QComboBox *fuelTypeCombo;
+    QComboBox *publicTransportCombo;
     QLabel *individualResultLabel;
 
-    // House page widgets
-    QWidget *housePage;
+    // House page controls
     QLineEdit *spaceEdit;
     QComboBox *houseTypeCombo;
     QLineEdit *electricityEdit;
@@ -43,8 +50,7 @@ private:
     QLineEdit *coldWaterEdit;
     QLabel *houseResultLabel;
 
-    // Diet page widgets
-    QWidget *dietPage;
+    // Diet page controls
     QComboBox *dietTypeCombo;
     QLabel *dietResultLabel;
 
