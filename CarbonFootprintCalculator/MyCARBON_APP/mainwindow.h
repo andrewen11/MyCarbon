@@ -23,6 +23,7 @@ private slots:
     void calculateHouse();
     void calculateDiet();
     void onTransportTypeChanged(int index);
+    void resizeEvent(QResizeEvent *event);
 
 private:
 
@@ -53,11 +54,19 @@ private:
     // Diet page controls
     QComboBox *dietTypeCombo;
     QLabel *dietResultLabel;
+    QLabel *backgroundLabel;
+    QPixmap originalBackground;
+    void updateBackground();
 
     void setupUI();
     QWidget* createIndividualPage();
     QWidget* createHousePage();
     QWidget* createDietPage();
+
+    QPushButton *backButton;
+
+signals:
+    void backToStart();
 };
 
 #endif // MAINWINDOW_H

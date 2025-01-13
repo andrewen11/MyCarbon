@@ -6,8 +6,7 @@
 CredentialsWindow::CredentialsWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    resize(800, 500);
-    setMinimumSize(800, 500); // Dimensiunea minimă
+    setMinimumSize(1000, 600);// Dimensiunea minimă
 
     // Creăm label-ul pentru imagine care acoperă întreaga fereastră
     backgroundLabel = new QLabel(this);

@@ -7,8 +7,7 @@
 StartWindow::StartWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    resize(800, 500);
-    setMinimumSize(800, 500); // Dimensiunea minimă
+    setMinimumSize(1000, 600); // Dimensiunea minimă
 
     // Creăm label-ul pentru imagine care acoperă întreaga fereastră
     backgroundLabel = new QLabel(this);
@@ -63,29 +62,26 @@ StartWindow::StartWindow(QWidget *parent)
     credentialsButton->move(baseX + startButton->width() + 20, buttonY); // Lângă Start Calculator
 
     // Conectăm semnalul clicked al butoanelor
-    connect(startButton, &QPushButton::clicked, this, &StartWindow::startApplication);
-
-    connect(credentialsButton, &QPushButton::clicked, this, [this]() {
-        // Salvează geometria și starea curentă
+    connect(startButton, &QPushButton::clicked, this, [this]() {
         savedGeometry = geometry();
         isFullscreen = isFullScreen();
 
-        // Creăm fereastra de credentiale
-        credentialsWindow = new CredentialsWindow(this);
+        // Creăm fereastra principală
+        mainWindow = new MainWindow(this);
 
-        // Aplicăm geometria și starea la CredentialsWindow
+        // Setăm starea ferestrei noi
         if (isFullscreen) {
-            credentialsWindow->showFullScreen();
+            mainWindow->showFullScreen();
         } else {
-            credentialsWindow->setGeometry(savedGeometry);
-            credentialsWindow->show();
+            mainWindow->setGeometry(savedGeometry);
+            mainWindow->show();
         }
 
-        // Conectăm semnalul pentru întoarcerea la fereastra principală
-        connect(credentialsWindow, &CredentialsWindow::backToStart, this, [this]() {
-            credentialsWindow->close();
+        // Conectăm semnalul pentru întoarcere
+        connect(mainWindow, &MainWindow::backToStart, this, [this]() {
+            mainWindow->close();
 
-            // Restaurăm geometria și starea la StartWindow
+            // Restaurăm starea la revenirea în StartWindow
             if (isFullscreen) {
                 showFullScreen();
             } else {
@@ -94,10 +90,39 @@ StartWindow::StartWindow(QWidget *parent)
             }
         });
 
-        // Ascundem fereastra principală
-        this->hide();
+        hide(); // Ascundem StartWindow
     });
 
+    connect(credentialsButton, &QPushButton::clicked, this, [this]() {
+        savedGeometry = geometry();
+        isFullscreen = isFullScreen();
+
+        // Creăm fereastra de credentiale
+        credentialsWindow = new CredentialsWindow(this);
+
+        // Setăm starea ferestrei noi
+        if (isFullscreen) {
+            credentialsWindow->showFullScreen();
+        } else {
+            credentialsWindow->setGeometry(savedGeometry);
+            credentialsWindow->show();
+        }
+
+        // Conectăm semnalul pentru întoarcere
+        connect(credentialsWindow, &CredentialsWindow::backToStart, this, [this]() {
+            credentialsWindow->close();
+
+            // Restaurăm starea la revenirea în StartWindow
+            if (isFullscreen) {
+                showFullScreen();
+            } else {
+                setGeometry(savedGeometry);
+                show();
+            }
+        });
+
+        hide(); // Ascundem StartWindow
+    });
     // Setăm titlul ferestrei
     setWindowTitle("My Carbon App");
 

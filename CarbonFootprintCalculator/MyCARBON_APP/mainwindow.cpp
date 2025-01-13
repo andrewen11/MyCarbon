@@ -5,14 +5,48 @@
 #include <QHBoxLayout>
 #include <QGroupBox>
 #include <QMessageBox>
+#include <QPainter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     setupUI();
     setWindowTitle("Carbon Footprint Calculator");
-    setMinimumSize(600, 600);
+    setMinimumSize(1000, 600);
 
+    // Creăm un QLabel pentru fundal
+    backgroundLabel = new QLabel(this);
+    backgroundLabel->setGeometry(0, 0, width(), height());
+
+    // Încărcăm imaginea
+    originalBackground = QPixmap(":/images/logo.png"); // Salvăm imaginea originală
+    if (!originalBackground.isNull()) {
+        updateBackground(); // Apelăm funcția pentru a seta fundalul inițial
+    }
+
+    backgroundLabel->lower(); // Asigură-te că fundalul este în spate
+
+    backButton = new QPushButton("Back", this);
+    backButton->setFixedSize(70, 38);
+    backButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: transparent;"  // Fundal transparent
+        "    color: #4CAF50;"  // Text negru
+        "    border: 1px solid #4CAF50;"  // Border negru de 2px
+        "    font-size: 16px;"
+        "    border-radius: 15px;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #4CAF50;"  // Fundal verde la hover
+        "    color: white;"  // Text alb la hover
+        "}"
+    );
+
+    int buttonX = 10;
+    int buttonY = backButton->height() - 25;
+    backButton->move(buttonX, buttonY);
+    backButton->raise();
+    connect(backButton, &QPushButton::clicked, this, &MainWindow::backToStart);
     // Aplicăm un stylesheet global pentru MainWindow
     this->setStyleSheet(
         "QMainWindow {"
@@ -52,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent)
         "    font-size: 14px;"
         "}"
         );
+    setupUI();
 }
 
 MainWindow::~MainWindow() {}
@@ -93,6 +128,46 @@ void MainWindow::setupUI() {
     connect(dietButton, &QPushButton::clicked, this, &MainWindow::showDietPage);
 
     setCentralWidget(centralWidget);
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    QMainWindow::resizeEvent(event);
+    updateBackground(); // Actualizăm fundalul la redimensionare
+    // Repoziționăm butonul în centrul de jos
+    int buttonX = 10;
+    int buttonY = backButton->height() - 25; // Poziția normală
+
+    // Ridicăm butonul cu 15-20 px în modul fullscreen
+    if (isFullScreen()) {
+        buttonY -= 30; // Ridică butonul cu 15 px
+    }
+
+    backButton->move(buttonX, buttonY);
+    backButton->raise();
+}
+
+void MainWindow::updateBackground()
+{
+    if (!originalBackground.isNull() && backgroundLabel) {
+        // Scalăm imaginea păstrând aspect ratio
+        QPixmap scaledBackground = originalBackground.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+        // Aplicăm opacitate folosind QPainter
+        QPixmap transparentBackground(scaledBackground.size());
+        transparentBackground.fill(Qt::transparent);
+        QPainter painter(&transparentBackground);
+        painter.setOpacity(0.5); // Setează opacitatea (0.0 complet transparent, 1.0 complet opac)
+        painter.drawPixmap(0, 0, scaledBackground);
+        painter.end();
+
+        backgroundLabel->setPixmap(transparentBackground);
+
+        // Calculăm poziționarea pentru centrare
+        int xOffset = (width() - scaledBackground.width()) / 2;
+        int yOffset = (height() - scaledBackground.height()) / 2;
+        backgroundLabel->setGeometry(xOffset, yOffset, scaledBackground.width(), scaledBackground.height());
+    }
 }
 
 QWidget* MainWindow::createIndividualPage() {
