@@ -582,10 +582,8 @@ void MainWindow::onTransportTypeChanged(QListWidgetItem *item) {
     else if (transportName == "Public Transport") {
         if (checked) {
             // Create public transport widgets if they don't exist
-            if (!publicTransportLabel) {
                 publicTransportLabel = new QLabel("Select Public Transport:");
                 transportFormLayout->addRow(publicTransportLabel);
-            }
 
             if (!publicTransportCombo) {
                 publicTransportCombo = new QListWidget();
@@ -838,7 +836,7 @@ void MainWindow::calculateIndividual() {
     // ✅ Respiration Carbon Footprint
     double acBreaths = breaths * 60 * 24 * 365 * EMISIE_RESPIRATIE;
     totalCO2Footprint += acBreaths;
-    resultDetails += QString("💨 <b>Breathing Carbon Footprint:</b> %1 kg CO₂/year").arg(acBreaths, 0, 'f', 2);
+    resultDetails += QString("💨 <b>Breathing Carbon Footprint:</b> %1 kg CO₂/year<br>").arg(acBreaths, 0, 'f', 2);
 
     // 🚗 Personal Transport
     for (const QString &transport : distanceInputs.keys()) {
