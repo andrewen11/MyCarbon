@@ -3,5 +3,12 @@
     <file>images/carbon_footprint.png</file>
     <file>images/credentials_background.png</file>
     <file>images/logo.png</file>
+    <file>images/green_nature.jpg</file>
+    <file>images/renewable_energy.jpg</file>
+    <file>images/pollution.jpg</file>
+    <file>images/green_home.jpg</file>
+    <file>images/energy_saving.jpg</file>
+    <file>images/high_energy_use.jpg</file>
+    <file>images/info_background.png</file>
   </qresource>
 </RCC>

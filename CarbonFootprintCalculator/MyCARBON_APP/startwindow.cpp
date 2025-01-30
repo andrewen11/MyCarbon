@@ -55,7 +55,7 @@ StartWindow::StartWindow(QWidget *parent)
     // Calculăm coordonatele pentru poziționarea centrală
     int totalWidth = startButton->width() + credentialsButton->width() + 10; // Spațiu între butoane
     int baseX = (width() - totalWidth) / 2; // Punctul de start pentru ambele butoane
-    int buttonY = height() - startButton->height() - 20;
+    int buttonY = height() - startButton->height();
 
     // Poziționăm butoanele
     startButton->move(baseX, buttonY);
@@ -153,7 +153,7 @@ void StartWindow::resizeEvent(QResizeEvent *event) {
     // Calculăm coordonatele pentru poziționarea centrală
     int totalWidth = startButton->width() + credentialsButton->width() + 20; // Spațiu de 20 px între butoane
     int baseX = (width() - totalWidth) / 2; // Punctul de start pentru primul buton
-    int buttonY = height() - startButton->height() - 20;
+    int buttonY = height() - startButton->height() - 40;
 
     // Repoziționăm butoanele
     startButton->move(baseX, buttonY);

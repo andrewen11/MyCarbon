@@ -1,16 +1,21 @@
 // mainwindow.cpp
 #include "mainwindow.h"
+#include "info1.h"
 #include "carbon_classes.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QPushButton>
 #include <QGroupBox>
 #include <QMessageBox>
 #include <QPainter>
+#include <QInputDialog>
+#include <QTextEdit>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent), infoWindow(nullptr)
 {
-    setupUI();
+    qDebug() << "MainWindow constructor called.";
     setWindowTitle("Carbon Footprint Calculator");
     setMinimumSize(1000, 600);
 
@@ -26,27 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     backgroundLabel->lower(); // Asigură-te că fundalul este în spate
 
-    backButton = new QPushButton("Back", this);
-    backButton->setFixedSize(70, 38);
-    backButton->setStyleSheet(
-        "QPushButton {"
-        "    background-color: transparent;"  // Fundal transparent
-        "    color: #4CAF50;"  // Text negru
-        "    border: 1px solid #4CAF50;"  // Border negru de 2px
-        "    font-size: 16px;"
-        "    border-radius: 15px;"
-        "}"
-        "QPushButton:hover {"
-        "    background-color: #4CAF50;"  // Fundal verde la hover
-        "    color: white;"  // Text alb la hover
-        "}"
-    );
-
-    int buttonX = 10;
-    int buttonY = backButton->height() - 25;
-    backButton->move(buttonX, buttonY);
-    backButton->raise();
-    connect(backButton, &QPushButton::clicked, this, &MainWindow::backToStart);
     // Aplicăm un stylesheet global pentru MainWindow
     this->setStyleSheet(
         "QMainWindow {"
@@ -89,62 +73,140 @@ MainWindow::MainWindow(QWidget *parent)
     setupUI();
 }
 
-MainWindow::~MainWindow() {}
+void MainWindow::goBack() {
+    qDebug() << "Returning to Start Menu...";  // 🔥 Debugging
+    emit backToStart();  // ✅ Notify that we are returning
+    this->hide();  // ✅ Hide instead of closing
+}
+
+void MainWindow::openInfoWindow() {
+    qDebug() << "Opening Info Window...";  // 🔥 Debugging
+
+    if (!infoWindow) {
+        infoWindow = new InfoWindow(this);  // ✅ Ensure it's linked to MainWindow
+    }
+
+    infoWindow->show();
+    infoWindow->raise();
+    infoWindow->activateWindow();
+}
+
+MainWindow::~MainWindow() {
+    delete infoWindow;
+}
 
 void MainWindow::setupUI() {
     QWidget *centralWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
+    mainLayout->setContentsMargins(20, 20, 20, 20);
 
-    // Creăm un titlu frumos pentru aplicație
-    QLabel *titleLabel = new QLabel("Carbon Footprint Calculator", this);
+    // ✅ Top Bar Layout (Grid pentru o mai bună aliniere)
+    QGridLayout *topBarLayout = new QGridLayout();
+    topBarLayout->setColumnStretch(1, 1); // Asigură că titlul e centrat
+
+    // ✅ "Back" Button (Stânga)
+    backButton = new QPushButton("Back", this);
+    backButton->setFixedSize(90, 43);
+    backButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: transparent;"
+        "    color: #4CAF50;"
+        "    border: 2px solid #4CAF50;"
+        "    font-size: 16px;"
+        "    border-radius: 20px;"
+        "} "
+        "QPushButton:hover { background-color: #4CAF50; color: white; }"
+        );
+    connect(backButton, &QPushButton::clicked, this, &MainWindow::goBack);
+
+    // ✅ Title Label (Mijloc)
+    QLabel *titleLabel = new QLabel("🌍 Carbon Footprint Calculator", this);
     titleLabel->setAlignment(Qt::AlignCenter);
-    titleLabel->setStyleSheet("font-size: 24px; font-weight: bold; margin-bottom: 20px;");
+    titleLabel->setStyleSheet("font-size: 28px; font-weight: bold; color: #2e7d32; margin-bottom: 10px;");
 
-    mainLayout->addWidget(titleLabel);
+    // ✅ "Info" Button (Dreapta)
+    infoButton = new QPushButton("Info", this);
+    infoButton->setFixedSize(90, 43);
+    infoButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: transparent;"
+        "    color: #4CAF50;"
+        "    border: 2px solid #4CAF50;"
+        "    font-size: 16px;"
+        "    border-radius: 20px;"
+        "} "
+        "QPushButton:hover { background-color: #4CAF50; color: white; }"
+        );
+    connect(infoButton, &QPushButton::clicked, this, &MainWindow::openInfoWindow);
 
-    // Layout pentru butoane
-    QHBoxLayout *buttonLayout = new QHBoxLayout();
-    QPushButton *individualButton = new QPushButton("Individual", this);
-    QPushButton *houseButton = new QPushButton("Home", this);
-    QPushButton *dietButton = new QPushButton("Diet", this);
+    // ✅ Adăugăm elementele în grid layout
+    topBarLayout->addWidget(backButton, 0, 0, Qt::AlignLeft);   // Buton Back (stânga)
+    topBarLayout->addWidget(titleLabel, 0, 1, Qt::AlignCenter); // Titlu (centru)
+    topBarLayout->addWidget(infoButton, 0, 2, Qt::AlignRight);  // Buton Info (dreapta)
 
-    buttonLayout->addWidget(individualButton);
-    buttonLayout->addWidget(houseButton);
-    buttonLayout->addWidget(dietButton);
+    // ✅ Adăugăm Top Bar în layout-ul principal
+    mainLayout->addLayout(topBarLayout);
 
-    mainLayout->addLayout(buttonLayout);
+    // ✅ Meniu de navigare
+    QHBoxLayout *menuLayout = new QHBoxLayout();
+    menuLayout->setSpacing(15);
 
-    // Creăm widget-ul pentru pagini
+    QPushButton *individualButton = new QPushButton("👤 Individual", this);
+    QPushButton *houseButton = new QPushButton("🏠 Home", this);
+    QPushButton *dietButton = new QPushButton("🥗 Diet", this);
+
+    QString buttonStyle =
+        "QPushButton {"
+        "    background-color: #4CAF50; color: white; font-size: 18px; padding: 12px;"
+        "    border-radius: 10px; font-weight: bold;"
+        "} "
+        "QPushButton:hover { background-color: #388E3C; }";
+
+    individualButton->setStyleSheet(buttonStyle);
+    houseButton->setStyleSheet(buttonStyle);
+    dietButton->setStyleSheet(buttonStyle);
+
+    menuLayout->addWidget(individualButton);
+    menuLayout->addWidget(houseButton);
+    menuLayout->addWidget(dietButton);
+    mainLayout->addLayout(menuLayout);
+
     stackedWidget = new QStackedWidget(this);
     stackedWidget->addWidget(createIndividualPage());
     stackedWidget->addWidget(createHousePage());
     stackedWidget->addWidget(createDietPage());
-
     mainLayout->addWidget(stackedWidget);
 
-    // Conectăm semnalele
     connect(individualButton, &QPushButton::clicked, this, &MainWindow::showIndividualPage);
     connect(houseButton, &QPushButton::clicked, this, &MainWindow::showHousePage);
     connect(dietButton, &QPushButton::clicked, this, &MainWindow::showDietPage);
 
     setCentralWidget(centralWidget);
+
+    if (!transportFormLayout) {  // Verifică dacă există deja
+        transportFormLayout = new QFormLayout();
+    }
+    if (!wasteFormLayout) {
+        wasteFormLayout = new QFormLayout();
+    }
 }
+
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
     updateBackground(); // Actualizăm fundalul la redimensionare
-    // Repoziționăm butonul în centrul de jos
-    int buttonX = 10;
-    int buttonY = backButton->height() - 25; // Poziția normală
+    // ✅ Align "Back" Button (Left Side)
+    // Repoziționează butoanele doar în partea de sus!
+    int buttonY = 15;  // Distanta de la marginea superioară
 
-    // Ridicăm butonul cu 15-20 px în modul fullscreen
-    if (isFullScreen()) {
-        buttonY -= 30; // Ridică butonul cu 15 px
-    }
+    // ✅ Poziționare "Back" (stânga)
+    int backButtonX = 10;
+    backButton->move(backButtonX, buttonY);
 
-    backButton->move(buttonX, buttonY);
-    backButton->raise();
+    // ✅ Poziționare "Info" (dreapta)
+    int infoButtonX = width() - infoButton->width() - 10;
+    infoButton->move(infoButtonX, buttonY);
 }
 
 void MainWindow::updateBackground()
@@ -172,168 +234,1097 @@ void MainWindow::updateBackground()
 
 QWidget* MainWindow::createIndividualPage() {
     individualPage = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(individualPage);
 
-    // Elemente
+    // ✅ Container principal pentru scroll
+    QWidget *scrollWidget = new QWidget();
+    QVBoxLayout *scrollLayout = new QVBoxLayout(scrollWidget);
+    scrollLayout->setContentsMargins(20, 20, 20, 20); // 🔥 Added more margins
+    scrollLayout->setSpacing(15);
+
+    // ✅ Asigurăm inițializarea layout-urilor
+   transportFormLayout = new QFormLayout();
+    wasteFormLayout = new QFormLayout();
+
+    scrollWidget->setStyleSheet(
+        "QWidget {"
+        "    background-color: rgba(255, 255, 255, 0.6);"  // ✅ Light white transparent
+        "    border-radius: 10px;"
+        "} "
+        );
+
+    // 🌬️ **Respirație - Container cu stil**
+    QGroupBox *breathGroup = new QGroupBox();
+    breathGroup->setStyleSheet(
+        "QGroupBox {"
+        "    background-color: white;"  // ✅ Same white background
+        "    border-radius: 10px;"
+        "    padding: 15px;"
+        "    font-size: 20px;"  // ✅ Bigger title
+        "    font-weight: bold;"
+        "    color: #2e7d32;"
+        "    margin-top: 15px;"
+        "} "
+        "QGroupBox::title {"
+        "    subcontrol-origin: margin;"
+        "    subcontrol-position: top left;"  // ✅ Align title to left
+        "    padding: 10px 15px;"
+        "}"
+        );
+
+    QVBoxLayout *breathLayout = new QVBoxLayout();
+    QLabel *breathLabel = new QLabel("Breaths per minute:");
+    breathLabel->setStyleSheet(
+        "font-size: 16px;"
+        "font-weight: bold;"
+        "color: green;"
+        "margin-bottom: 5px;"
+        "margin-top: -5px;"
+        );
     breathsEdit = new QLineEdit();
-    distanceEdit = new QLineEdit();
+    breathsEdit->setPlaceholderText("Enter your breathing rate (5-25)");
+    breathsEdit->setValidator(new QIntValidator(5, 25, this));
+    breathsEdit->setStyleSheet(
+        "QLineEdit {"
+        "    background-color: white;"
+        "    border: 1px solid #4CAF50;"
+        "    border-radius: 5px;"
+        "    padding: 8px;"
+        "    font-size: 16px;"
+        "}"
+        );
 
-    transportTypeCombo = new QComboBox();
-    transportTypeCombo->addItem("(Select option)"); // Element gol
-    transportTypeCombo->addItems({"Personal Car", "Public Transportation", "Bicycle", "Scooter"});
+    breathLayout->addWidget(breathLabel);
+    breathLayout->addWidget(breathsEdit);
+    breathGroup->setLayout(breathLayout);
+    scrollLayout->addWidget(breathGroup);
 
-    // ComboBox pentru selectarea tipului de combustibil/transport public (vizibil doar pentru anumite tipuri de transport)
-    fuelTypeCombo = new QComboBox();
-    fuelTypeCombo->addItem("(Choose the fuel type of your car)"); // Element gol
-    fuelTypeCombo->addItems({"Gasoline", "Diesel", "Electric", "LPG"});
-    fuelTypeCombo->setVisible(false);  // Inițial ascuns
+    // 🚗 **Transport - Container cu stil**
 
-    publicTransportCombo = new QComboBox();
-    publicTransportCombo->addItem("(Choose your public transportation method)"); // Element gol
-    publicTransportCombo->addItems({"Train", "Metro", "Bus", "Trolleybus", "Airplane"});
-    publicTransportCombo->setVisible(false);  // Inițial ascuns
+    QLabel *TransportLabel = new QLabel("Select transport method(s):");  // 🔥 Added icon for visibility
+    TransportLabel->setStyleSheet(
+        "font-size: 16px;"
+        "font-weight: bold;"
+        "color: green;"
+        "margin-bottom: 5px;"
+        "margin-top: -5px;"
+        );
 
-    individualResultLabel = new QLabel();
+    QGroupBox *transportGroup = new QGroupBox();
+    transportGroup->setStyleSheet(
+        "QGroupBox {"
+        "    background-color: white;"  // ✅ White background for contrast
+        "    border-radius: 10px;"
+        "    padding: 15px;"
+        "    font-size: 20px;"
+        "    font-weight: bold;"
+        "    color: #2e7d32;"
+        "    margin-top: 15px;"
+        "} "
+        "QGroupBox::title {"
+        "    subcontrol-origin: margin;"
+        "    subcontrol-position: top left;"
+        "    padding: 10px 15px;"
+        "}"
+        );
 
-    QGroupBox *groupBox = new QGroupBox("Individual Details");
-    QVBoxLayout *groupLayout = new QVBoxLayout();
+    QVBoxLayout *transportLayout = new QVBoxLayout();
+    transportTypeList = new QListWidget();
+    transportTypeList->setSelectionMode(QAbstractItemView::MultiSelection);
 
-    groupLayout->addWidget(new QLabel("Breaths per minute:"));
-    groupLayout->addWidget(breathsEdit);
-    groupLayout->addWidget(new QLabel("Daily traveled distance (kilometers):"));
-    groupLayout->addWidget(distanceEdit);
-    groupLayout->addWidget(new QLabel("Transport type:"));
-    groupLayout->addWidget(transportTypeCombo);
-    groupLayout->addWidget(fuelTypeCombo);   // Adăugăm comboBox-ul pentru combustibil
-    groupLayout->addWidget(publicTransportCombo); // Adăugăm comboBox-ul pentru transport public
+    // 🔥 Fix `QListWidget` style
+    transportTypeList->setStyleSheet(
+        "QListWidget {"
+        "    background-color: rgba(255, 255, 255, 245);"  // ✅ Light background
+        "    border: 1px solid #4CAF50;"  // ✅ Green border
+        "    font-size: 16px;"
+        "    padding: 10px;"
+        "    color: black;"  // ✅ Text color visible
+        "} "
+        "QListWidget::indicator:unchecked {"
+        "    background-color: white;"
+        "    border: 2px solid #4CAF50;"
+        "    width: 18px;"
+        "    height: 18px;"
+        "} "
+        "QListWidget::indicator:checked {"
+        "    background-color: #4CAF50;"
+        "    border: 2px solid #2e7d32;"
+        "}");
 
-    groupBox->setLayout(groupLayout);
+    // 🚛 **Waste - Container cu stil**
+    QLabel *WasteLabel = new QLabel("Select waste used:");
+    WasteLabel->setStyleSheet(
+        "font-size: 16px;"
+        "font-weight: bold;"
+        "color: #2e7d32;"
+        "margin-bottom: 5px;"
+        "margin-top: -5px;"
+        );
 
+    QGroupBox *wasteGroup = new QGroupBox();
+    wasteGroup->setStyleSheet(
+        "QGroupBox {"
+        "    background-color: white;"  // ✅ White background for consistency
+        "    border-radius: 10px;"
+        "    padding: 15px;"
+        "    font-size: 20px;"
+        "    font-weight: bold;"
+        "    color: #2e7d32;"
+        "    margin-top: 15px;"
+        "} "
+        "QGroupBox::title {"
+        "    subcontrol-origin: margin;"
+        "    subcontrol-position: top left;"
+        "    padding: 10px 15px;"
+        "}"
+        );
+
+    QVBoxLayout *wasteLayout = new QVBoxLayout();
+    wasteTypeList = new QListWidget();
+    wasteTypeList->setSelectionMode(QAbstractItemView::MultiSelection);
+
+    // 🔥 Fix `QListWidget` style
+    wasteTypeList->setStyleSheet(
+        "QListWidget {"
+        "    background-color: rgba(255, 255, 255, 245);"  // ✅ Light background
+        "    border: 1px solid #4CAF50;"  // ✅ Green border
+        "    font-size: 16px;"
+        "    padding: 10px;"
+        "    color: black;"  // ✅ Text color visible
+        "} "
+        "QListWidget::indicator:unchecked {"
+        "    background-color: white;"
+        "    border: 2px solid #4CAF50;"
+        "    width: 18px;"
+        "    height: 18px;"
+        "} "
+        "QListWidget::indicator:checked {"
+        "    background-color: #4CAF50;"
+        "    border: 2px solid #2e7d32;"
+        "}");
+
+    // ✅ Auto-adjust height based on content
+    wasteTypeList->setMinimumHeight(wasteTypeList->sizeHintForRow(0) * 4 + 10);
+    wasteLayout->addWidget(WasteLabel);
+    wasteLayout->addWidget(wasteTypeList);
+    wasteLayout->addLayout(wasteFormLayout);
+    wasteGroup->setLayout(wasteLayout);
+    scrollLayout->addWidget(wasteGroup);
+
+    // ✅ Add transport options dynamically
+    QStringList transportOptions = {"Personal Car", "Public Transport", "Bicycle", "Scooter", "Walk"};
+    for (const QString &option : transportOptions) {
+        QListWidgetItem *item = new QListWidgetItem(option, transportTypeList);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+        item->setCheckState(Qt::Unchecked);
+        transportTypeList->addItem(item);
+    }
+
+    // ✅ Dynamically adjust QListWidget height
+    int rowHeight = transportTypeList->sizeHintForRow(0); // Height of one row
+    transportTypeList->setFixedHeight(rowHeight * transportTypeList->count() + 10); // Dynamic height
+
+    transportLayout->addWidget(TransportLabel);
+    transportLayout->addWidget(transportTypeList);
+    transportLayout->addLayout(transportFormLayout);
+    transportGroup->setLayout(transportLayout);
+    scrollLayout->addWidget(transportGroup);
+
+    connect(transportTypeList, &QListWidget::itemChanged, this, &MainWindow::onTransportTypeChanged);
+
+    // ✅ Add waste options dynamically
+    QStringList wasteOptions = {"Plastic", "Paper", "Glass", "Food Waste"};
+    for (const QString &option : wasteOptions) {
+        QListWidgetItem *item = new QListWidgetItem(option, wasteTypeList);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+        item->setCheckState(Qt::Unchecked);
+        wasteTypeList->addItem(item);
+    }
+
+    // ✅ Dynamically adjust QListWidget height
+    int wasteRowHeight = wasteTypeList->sizeHintForRow(0);
+    wasteTypeList->setFixedHeight(wasteRowHeight * wasteTypeList->count() + 10);
+
+    wasteLayout->addWidget(wasteTypeList);
+    wasteLayout->addLayout(wasteFormLayout);
+    wasteGroup->setLayout(wasteLayout);
+    scrollLayout->addWidget(wasteGroup);
+
+    connect(wasteTypeList, &QListWidget::itemChanged, this, &MainWindow::onWasteTypeChanged);
+
+    // ✅ **Adăugăm butonul de calcul și rezultat**
     QPushButton *calculateButton = new QPushButton("Calculate");
+    calculateButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #4CAF50;"  // ✅ Green background
+        "    color: white;"  // ✅ White text
+        "    font-size: 18px;"  // ✅ Larger font
+        "    padding: 10px 20px;"
+        "    border-radius: 8px;"  // ✅ Rounded corners
+        "    font-weight: bold;"
+        "} "
+        "QPushButton:hover {"
+        "    background-color: #388E3C;"  // ✅ Darker green on hover
+        "} "
+        "QPushButton:pressed {"
+        "    background-color: #1B5E20;"  // ✅ Even darker when pressed
+        "} "
+        );
+    scrollLayout->addWidget(calculateButton, 0, Qt::AlignCenter);  // ✅ Center the button
     connect(calculateButton, &QPushButton::clicked, this, &MainWindow::calculateIndividual);
 
-    // Conectăm schimbarea tipului de transport pentru a arăta/ascunde opțiunile de combustibil/transport public
-    connect(transportTypeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onTransportTypeChanged);
+    // ✅ **Facem containerul scrollabil**
+    QScrollArea *scrollArea = new QScrollArea();
+    scrollArea->setWidget(scrollWidget);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    layout->addWidget(groupBox);
-    layout->addWidget(calculateButton);
-    layout->addWidget(individualResultLabel);
-    layout->addStretch();
+    // 🔥 Fix scroll area background color and remove black edges
+    scrollArea->setStyleSheet(
+        "QScrollArea {"
+        "    border: none;"  // Remove any black border
+        "    background-color: transparent;"  // Make background blend
+        "} "
+        "QScrollArea QWidget {"
+        "    background-color: rgba(255, 255, 255, 0.6);"  // ✅ White transparent
+        "    border-radius: 10px;"  // ✅ Rounded corners
+        "} "
+        "QScrollBar:vertical {"
+        "    border: none;"
+        "    background: rgba(0, 0, 0, 0.1);"  // ✅ Light scrollbar background
+        "    width: 10px;"
+        "    margin: 5px 0 5px 0;"
+        "    border-radius: 5px;"
+        "} "
+        "QScrollBar::handle:vertical {"
+        "    background: rgba(76, 175, 80, 0.8);"  // ✅ Green scroll handle
+        "    min-height: 30px;"
+        "    border-radius: 5px;"
+        "} "
+        "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {"
+        "    background: none;"
+        "    border: none;"
+        "}"
+        );
+
+
+    // ✅ **Adăugăm scrollArea în layout-ul principal al paginii**
+    QVBoxLayout *mainLayout = new QVBoxLayout(individualPage);
+    mainLayout->addWidget(scrollArea);
 
     return individualPage;
 }
 
-void MainWindow::onTransportTypeChanged(int index) {
-    if (index == 1) {  // Mașină personală
-        fuelTypeCombo->setVisible(true);
-        publicTransportCombo->setVisible(false);
-    } else if (index == 2) {  // Transport comun
-        fuelTypeCombo->setVisible(false);
-        publicTransportCombo->setVisible(true);
-    } else {  // Bicicletă sau Trotinetă
-        fuelTypeCombo->setVisible(false);
-        publicTransportCombo->setVisible(false);
+
+
+
+
+void MainWindow::onTransportTypeChanged(QListWidgetItem *item) {
+    if (!transportTypeList || !transportFormLayout || !item) return; // 🔥 Verificare pointeri
+
+    QString transportName = item->text();
+    bool checked = (item->checkState() == Qt::Checked);
+
+    qDebug() << "Transport selection changed: " << transportName << ", Checked: " << checked;
+
+    transportTypeList->setStyleSheet(
+        "QListWidget {"
+        "    background-color: rgba(255, 255, 255, 230);"
+        "    border: 1px solid #4CAF50;"
+        "    font-size: 16px;"
+        "    padding: 10px;"
+        "    color: black;"
+        "}"
+        "QListWidget::indicator:unchecked {"
+        "    background-color: white;"
+        "    border: 2px solid #4CAF50;"
+        "    width: 18px;"
+        "    height: 18px;"
+        "}"
+        "QListWidget::indicator:checked {"
+        "    background-color: #4CAF50;"
+        "    border: 2px solid #2e7d32;"
+        "}"
+        );
+
+    // 🚗 Personal Car
+    if (transportName == "Personal Car") {
+        if (checked && !distanceInputs.contains(transportName)) {
+            QLabel *distanceLabel = new QLabel("Distance (km):");
+            QLineEdit *distanceEdit = new QLineEdit();
+            distanceEdit->setPlaceholderText("Enter monthly distance (km)");
+            distanceEdit->setStyleSheet("border: 1px solid #4CAF50; border-radius: 5px; padding: 5px;");
+
+            QLabel *fuelLabel = new QLabel("Fuel Type:");
+            QComboBox *fuelCombo = new QComboBox();
+            fuelCombo->addItems({"Gasoline", "Diesel", "Electric", "LPG"});
+            fuelCombo->setStyleSheet("border: 1px solid #4CAF50; border-radius: 5px; padding: 5px;");
+
+            transportFormLayout->addRow(distanceLabel, distanceEdit);
+            transportFormLayout->addRow(fuelLabel, fuelCombo);
+
+            distanceLabels[transportName] = distanceLabel;
+            distanceInputs[transportName] = distanceEdit;
+            fuelLabels[transportName] = fuelLabel;
+            fuelInputs[transportName] = fuelCombo;
+        }
+        else if (!checked) {
+            delete distanceLabels.take(transportName);
+            delete distanceInputs.take(transportName);
+            delete fuelLabels.take(transportName);
+            delete fuelInputs.take(transportName);
+        }
+    }
+
+    // 🚌 Public Transport
+    else if (transportName == "Public Transport") {
+        if (checked) {
+            // Create public transport widgets if they don't exist
+            if (!publicTransportLabel) {
+                publicTransportLabel = new QLabel("Select Public Transport:");
+                transportFormLayout->addRow(publicTransportLabel);
+            }
+
+            if (!publicTransportCombo) {
+                publicTransportCombo = new QListWidget();
+                publicTransportCombo->setSelectionMode(QAbstractItemView::MultiSelection);
+                publicTransportCombo->setStyleSheet(
+                    "QListWidget {"
+                    "    background-color: rgba(255, 255, 255, 245);"
+                    "    border: 1px solid #4CAF50;"
+                    "    font-size: 16px;"
+                    "    padding: 10px;"
+                    "    color: black;"
+                    "} "
+                    "QListWidget::indicator:unchecked {"
+                    "    background-color: white;"
+                    "    border: 2px solid #4CAF50;"
+                    "    width: 18px;"
+                    "    height: 18px;"
+                    "} "
+                    "QListWidget::indicator:checked {"
+                    "    background-color: #4CAF50;"
+                    "    border: 2px solid #2e7d32;"
+                    "}"
+                    );
+
+                QStringList options = {"Train", "Metro", "Bus", "Trolleybus", "Airplane"};
+                for (const QString &option : options) {
+                    QListWidgetItem *optionItem = new QListWidgetItem(option);
+                    optionItem->setFlags(optionItem->flags() | Qt::ItemIsUserCheckable);
+                    optionItem->setCheckState(Qt::Unchecked);
+                    publicTransportCombo->addItem(optionItem);
+                }
+
+                connect(publicTransportCombo, &QListWidget::itemChanged, this, &MainWindow::onPublicTransportChanged);
+                transportFormLayout->addRow(publicTransportCombo);
+            }
+        } else {
+            // Safe cleanup of public transport widgets
+            if (publicTransportCombo) {
+                // First, disconnect the signal to prevent crashes during cleanup
+                disconnect(publicTransportCombo, &QListWidget::itemChanged, this, &MainWindow::onPublicTransportChanged);
+
+                // Remove all public transport distance inputs
+                QMutableMapIterator<QString, QLabel*> labelIt(publicTransportLabels);
+                while (labelIt.hasNext()) {
+                    labelIt.next();
+                    if (labelIt.value()) {
+                        transportFormLayout->removeWidget(labelIt.value());
+                        delete labelIt.value();
+                    }
+                }
+                publicTransportLabels.clear();
+
+                QMutableMapIterator<QString, QLineEdit*> distanceIt(publicTransportDistances);
+                while (distanceIt.hasNext()) {
+                    distanceIt.next();
+                    if (distanceIt.value()) {
+                        transportFormLayout->removeWidget(distanceIt.value());
+                        delete distanceIt.value();
+                    }
+                }
+                publicTransportDistances.clear();
+
+                // Remove the combo box and label
+                if (publicTransportLabel) {
+                    transportFormLayout->removeWidget(publicTransportLabel);
+                    delete publicTransportLabel;
+                    publicTransportLabel = nullptr;
+                }
+
+                transportFormLayout->removeWidget(publicTransportCombo);
+                delete publicTransportCombo;
+                publicTransportCombo = nullptr;
+            }
+        }
+        return;
+    }
+    // 🚲 Bicycle, 🛴 Scooter, 🚶 Walk
+    else if (transportName == "Bicycle" || transportName == "Scooter" || transportName == "Walk") {
+        if (checked && !distanceInputs.contains(transportName)) {
+            QLabel *distanceLabel = new QLabel(transportName + " Distance (km):");
+            QLineEdit *distanceEdit = new QLineEdit();
+            distanceEdit->setPlaceholderText("Enter monthly distance (km)");
+            distanceEdit->setStyleSheet("border: 1px solid #4CAF50; border-radius: 5px; padding: 5px;");
+
+            transportFormLayout->addRow(distanceLabel, distanceEdit);
+            distanceLabels[transportName] = distanceLabel;
+            distanceInputs[transportName] = distanceEdit;
+        }
+        else if (!checked) {
+            delete distanceLabels.take(transportName);
+            delete distanceInputs.take(transportName);
+        }
     }
 }
 
+
+void MainWindow::onPublicTransportChanged(QListWidgetItem *item) {
+    if (!publicTransportCombo || !transportFormLayout || !item) return;
+
+    QString transportType = item->text();
+    bool checked = (item->checkState() == Qt::Checked);
+
+    qDebug() << "Public Transport Selection Changed: " << transportType << ", Checked: " << checked;
+
+    if (checked) {
+        // Only create new widgets if they don't already exist
+        if (!publicTransportDistances.contains(transportType)) {
+            QLabel *label = new QLabel(transportType + " Distance (km):");
+            QLineEdit *distanceEdit = new QLineEdit();
+            distanceEdit->setPlaceholderText("Enter monthly distance for " + transportType);
+            distanceEdit->setStyleSheet("border: 1px solid #4CAF50; border-radius: 5px; padding: 5px;");
+
+            transportFormLayout->addRow(label, distanceEdit);
+            publicTransportLabels[transportType] = label;
+            publicTransportDistances[transportType] = distanceEdit;
+        }
+    } else {
+        // Safe removal of widgets
+        if (publicTransportLabels.contains(transportType)) {
+            QLabel *label = publicTransportLabels[transportType];
+            transportFormLayout->removeWidget(label);
+            delete label;
+            publicTransportLabels.remove(transportType);
+        }
+
+        if (publicTransportDistances.contains(transportType)) {
+            QLineEdit *distanceEdit = publicTransportDistances[transportType];
+            transportFormLayout->removeWidget(distanceEdit);
+            delete distanceEdit;
+            publicTransportDistances.remove(transportType);
+        }
+    }
+}
+
+double getCombustibilEmission(TipCombustibil combustibil) {
+    switch (combustibil) {
+    case BENZINA: return EmisieCombustibil::BENZINA;
+    case MOTORINA: return EmisieCombustibil::MOTORINA;
+    case ELECTRICA: return EmisieCombustibil::ELECTRICA;
+    case GPL: return EmisieCombustibil::GPL;
+    default: return 0.0;
+    }
+}
+
+double getTransportPublicEmission(TipTransportPublic transportPublic) {
+    switch (transportPublic) {
+    case TREN: return EmisieTransportPublic::TREN;
+    case METROU: return EmisieTransportPublic::METROU;
+    case AUTOBUZ: return EmisieTransportPublic::AUTOBUZ;
+    case TROLEIBUZ: return EmisieTransportPublic::TROLEIBUZ;
+    case AVION: return EmisieTransportPublic::AVION;
+    default: return 0.0;
+    }
+}
+
+void MainWindow::onWasteTypeChanged(QListWidgetItem *item) {
+    if (!item) return;
+
+    QString wasteName = item->text();
+    bool checked = (item->checkState() == Qt::Checked);
+
+    if (checked) {
+        QLabel *amountLabel = new QLabel(wasteName + " Amount (kg):");
+        QLineEdit *amountEdit = new QLineEdit();
+        amountEdit->setPlaceholderText("Enter monthly waste amount");
+        amountEdit->setValidator(new QDoubleValidator(0.00, 1000.00, 2, this));
+        amountEdit->setLocale(QLocale::C); // ✅ Forțăm separatorul de zecimale "."
+
+        QLabel *methodLabel = new QLabel("Disposal Method for " + wasteName + ":");
+        QComboBox *methodCombo = new QComboBox();
+        methodCombo->addItems({"Landfill", "Incineration", "Recycling", "Composting"});
+
+        // ✅ Aplică stilul manual, după crearea QComboBox-ului
+        methodCombo->setStyleSheet(
+            "QComboBox {"
+            "    background-color: white;"  // ✅ Alb pentru câmpul principal
+            "    color: black;"  // ✅ Text negru
+            "    border: 2px solid #4CAF50;"
+            "    border-radius: 5px;"
+            "    padding: 5px;"
+            "    font-size: 14px;"
+            "} "
+            "QComboBox::drop-down {"
+            "    border: none;"
+            "    background: #4CAF50;"  // ✅ Fundal verde pentru săgeată
+            "    width: 25px;"
+            "} "
+            "QComboBox::down-arrow {"
+            "    image: url(:/icons/down-arrow.png);"  // ✅ Poți pune o imagine custom
+            "} "
+            "QComboBox QAbstractItemView {"
+            "    background: white;"  // ✅ Alb pentru dropdown
+            "    color: black;"  // ✅ Text negru pentru contrast
+            "    selection-background-color: #4CAF50;"  // ✅ Verde pentru selecție
+            "    selection-color: white;"  // ✅ Text alb când e selectat
+            "    border: 1px solid #4CAF50;"
+            "} "
+            "QComboBox::item {"
+            "    padding: 5px;"
+            "} "
+            "QComboBox::item:selected {"
+            "    background-color: #4CAF50;"  // ✅ Verde când e selectat
+            "    color: white;"
+            "} ");
+
+        // ✅ Adăugare în layout
+        wasteFormLayout->addRow(amountLabel, amountEdit);
+        wasteFormLayout->addRow(methodLabel, methodCombo);
+
+        // ✅ Stocare pentru eliminare ulterioară
+        wasteAmountLabels.insert(wasteName, amountLabel);
+        wasteAmountInputs.insert(wasteName, amountEdit);
+        wasteMethodLabels.insert(wasteName, methodLabel);
+        wasteDisposalInputs.insert(wasteName, methodCombo);
+    }
+    else {
+        // ✅ Elimină câmpurile la deselectare
+        delete wasteAmountLabels.take(wasteName);
+        delete wasteAmountInputs.take(wasteName);
+        delete wasteMethodLabels.take(wasteName);
+        delete wasteDisposalInputs.take(wasteName);
+    }
+}
+
+
+
 void MainWindow::calculateIndividual() {
-    if (transportTypeCombo->currentIndex() == 0) { // Dacă nu este selectat un tip de transport
-        QMessageBox::warning(this, "Error", "Please select a transport method!");
-        return;
-    }
-    bool ok1, ok2;
-    int breaths = breathsEdit->text().toInt(&ok1);
-    double distance = distanceEdit->text().toDouble(&ok2);
-
-    if (!ok1 || !ok2) {
-        QMessageBox::warning(this, "Error", "Please insert numbers in all the fields!");
+    qDebug() << "Calculating Individual Carbon Footprint...";
+    bool ok;
+    int breaths = breathsEdit->text().toInt(&ok);
+    if (!ok || breaths < 5 || breaths > 25) {
+        QMessageBox::warning(this, "Error", "Please enter a valid breathing rate (5-25).");
         return;
     }
 
-    if (breaths < 0 || distance < 0) {
-        QMessageBox::warning(this, "Error", "Please insert positive numbers in all the fields!");
-        return;
-    }
+    std::vector<TipTransport> transports;
+    std::vector<TipCombustibil> combustibili;
+    std::vector<TipTransportPublic> transportPublics;
+    std::vector<double> distances;
 
+    double totalTransportCO2 = 0.0;
+    QString transportDetails;
+    double totalCO2Footprint = 0.0;
+    QString resultDetails;
 
-    TipTransport transport;
-    TipCombustibil combustibil = BENZINA;
-    TipTransportPublic transportPublic = TREN;
+    // 🛠️ Waste Calculations
+    double totalWasteCO2 = 0.0;
+    QString wasteDetails;
 
-    if (transportTypeCombo->currentIndex() == 1) {  // Mașină personală
-        transport = MASINA_PERSONALA;
-        switch(fuelTypeCombo->currentIndex()) {
-        case 0: QMessageBox::warning(this, "Error", "Please select a fuel type!");
-                return;
-        case 1: combustibil = BENZINA; break;
-        case 2: combustibil = MOTORINA; break;
-        case 3: combustibil = ELECTRICA; break;
-        case 4: combustibil = GPL; break;
+    // ✅ Respiration Carbon Footprint
+    double acBreaths = breaths * 60 * 24 * 365 * EMISIE_RESPIRATIE;
+    totalCO2Footprint += acBreaths;
+    resultDetails += QString("💨 <b>Breathing Carbon Footprint:</b> %1 kg CO₂/year").arg(acBreaths, 0, 'f', 2);
+
+    // 🚗 Personal Transport
+    for (const QString &transport : distanceInputs.keys()) {
+        double distance = distanceInputs[transport]->text().toDouble(&ok);
+        if (!ok || distance <= 0) {
+            QMessageBox::warning(this, "Error", "Please enter a valid distance for " + transport);
+            return;
         }
-    } else if (transportTypeCombo->currentIndex() == 2) {  // Transport comun
-        transport = TRANSPORT_COMUN;
-        switch(publicTransportCombo->currentIndex()) {
-        case 0: QMessageBox::warning(this, "Error", "Please select a public transportation method!");
-                return;
-        case 1: transportPublic = TREN; break;
-        case 2: transportPublic = METROU; break;
-        case 3: transportPublic = AUTOBUZ; break;
-        case 4: transportPublic = TROLEIBUZ; break;
-        case 5: transportPublic = AVION; break;
+
+        if (transport == "Personal Car") {
+            transports.push_back(MASINA_PERSONALA);
+            distances.push_back(distance);
+
+            if (fuelInputs.contains(transport)) {
+                QString fuelType = fuelInputs[transport]->currentText();
+                TipCombustibil combustibil;
+
+                if (fuelType == "Gasoline") combustibil = BENZINA;
+                else if (fuelType == "Diesel") combustibil = MOTORINA;
+                else if (fuelType == "Electric") combustibil = ELECTRICA;
+                else if (fuelType == "LPG") combustibil = GPL;
+                else {
+                    QMessageBox::warning(this, "Error", "Please select a valid fuel type for " + transport);
+                    return;
+                }
+                combustibili.push_back(combustibil);
+
+                double transportCO2 = distance * 12 * getCombustibilEmission(combustibil);
+                totalCO2Footprint += transportCO2;
+                totalTransportCO2 += transportCO2;
+                transportDetails += QString("🚗 Personal Car (Fuel: %1, %2 km): %3 kg CO₂/year<br>")
+                                        .arg(fuelType).arg(distance).arg(transportCO2, 0, 'f', 2);
+            }
         }
-    } else if (transportTypeCombo->currentIndex() == 3) {  // Bicicletă
-        transport = BICICLETA;
-    } else {  // Trotinetă
-        transport = TROTINETA;
+
+        else if (transport == "Bicycle") {
+            double co2Bicycle = distance * 12 * 0.0021;
+            totalCO2Footprint += co2Bicycle;
+            totalTransportCO2 += co2Bicycle;
+            transportDetails += QString("🚲 Bicycle (%1 km): %2 kg CO₂/year<br>")
+                                    .arg(distance).arg(co2Bicycle, 0, 'f', 2);
+        }
+        else if (transport == "Scooter") {
+            double co2Scooter = distance * 12 * 0.0018;
+            totalCO2Footprint += co2Scooter;
+            totalTransportCO2 += co2Scooter;
+            transportDetails += QString("🛴 Scooter (%1 km): %2 kg CO₂/year<br>")
+                                    .arg(distance).arg(co2Scooter, 0, 'f', 2);
+        }
+        else if (transport == "Walk") {
+            double co2Walk = distance * 12 * 0.0010;
+            totalCO2Footprint += co2Walk;
+            totalTransportCO2 += co2Walk;
+            transportDetails += QString("🚶 Walking (%1 km): %2 kg CO₂/year<br>")
+                                    .arg(distance).arg(co2Walk, 0, 'f', 2);
+        }
     }
 
-    Persoana persoana(breaths, distance, transport, combustibil, transportPublic);
-    double result = persoana.calculTotalAC();
-    individualResultLabel->setText(QString("Carbon Footprint: %1 kg CO2/year").arg(result, 0, 'f', 2));
+    // 🚌 Public Transport (Separate Line for Each)
+    if (publicTransportCombo) {
+        for (int i = 0; i < publicTransportCombo->count(); ++i) {
+            QListWidgetItem *item = publicTransportCombo->item(i);
+            if (item->checkState() == Qt::Checked) {
+                QString transportType = item->text();
+                double publicDistance = publicTransportDistances[transportType]->text().toDouble(&ok);
+                if (!ok || publicDistance <= 0) {
+                    QMessageBox::warning(this, "Error", "Please enter a valid distance for " + transportType);
+                    return;
+                }
+
+                TipTransportPublic transportPublic;
+                QString transportEmoji;
+
+                if (transportType == "Train") {
+                    transportPublic = TREN;
+                    transportEmoji = "🚂";
+                } else if (transportType == "Metro") {
+                    transportPublic = METROU;
+                    transportEmoji = "🚇";
+                } else if (transportType == "Bus") {
+                    transportPublic = AUTOBUZ;
+                    transportEmoji = "🚌";
+                } else if (transportType == "Trolleybus") {
+                    transportPublic = TROLEIBUZ;
+                    transportEmoji = "🚎";
+                } else if (transportType == "Airplane") {
+                    transportPublic = AVION;
+                    transportEmoji = "✈️";
+                }
+
+                transportPublics.push_back(transportPublic);
+
+                double transportCO2 = publicDistance * getTransportPublicEmission(transportPublic);
+                totalCO2Footprint += transportCO2;
+                totalTransportCO2 += transportCO2;
+                transportDetails += QString("%1 %2 (%3 km): %4 kg CO₂/year<br>")
+                                        .arg(transportEmoji).arg(transportType)
+                                        .arg(publicDistance).arg(transportCO2, 0, 'f', 2);
+            }
+        }
+    }
+
+    // 🚆 **Transport Summary**
+    if (!transportDetails.isEmpty()) {
+        resultDetails += "<hr><b>TRANSPORT DETAILS (kg CO₂ emissions/year) 🚆:</b><br>" + transportDetails + "<br>";
+    }
+    resultDetails += "🚆 <b>TOTAL Transport Carbon Footprint:</b> " +
+                     QString("%1 kg CO₂/year").arg(totalTransportCO2, 0, 'f', 2) + "<br>";
+
+    // ♻️ **Waste Summary**
+    for (const QString &waste : wasteAmountInputs.keys()) {
+        QString wasteEmoji;
+
+        if (waste == "Plastic") wasteEmoji = "🛍️";
+        else if (waste == "Paper") wasteEmoji = "📄";
+        else if (waste == "Glass") wasteEmoji = "🥛";
+        else if (waste == "Food Waste") wasteEmoji = "♨️";
+
+        bool ok;
+        double amount = wasteAmountInputs[waste]->text().toDouble(&ok);
+        if (!ok || amount < 0) {
+            QMessageBox::warning(this, "Error", "Please enter a valid waste amount for " + waste);
+            return;
+        }
+
+        QString method = wasteDisposalInputs[waste]->currentText();
+        double factor = (method == "Landfill") ? EMISIE_GUNOI_DEPONIE :
+                            (method == "Incineration") ? EMISIE_GUNOI_INCINERARE :
+                            (method == "Recycling") ? EMISIE_GUNOI_RECICLARE :
+                            EMISIE_GUNOI_COMPOST;
+
+        double wasteCO2 = factor * amount * 12;
+        totalWasteCO2 += wasteCO2;
+        wasteDetails += QString("%1 %2 (%3 kg): %4 kg CO₂/year<br>")
+                            .arg(wasteEmoji).arg(waste).arg(amount).arg(wasteCO2, 0, 'f', 2);
+    }
+
+    if (!wasteDetails.isEmpty()) {
+        resultDetails += "<hr><b>WASTE DETAILS (kg CO₂ emissions/year) 🗑️: </b><br>" + wasteDetails + "<br>";
+    }
+    resultDetails += "🗑️ <b>TOTAL Waste Carbon Footprint:</b> " +
+                     QString("%1 kg CO₂/year").arg(totalWasteCO2, 0, 'f', 2) + "<br>";
+
+    totalCO2Footprint += totalWasteCO2;
+    // 🌎 **Total Summary**
+    resultDetails += "<hr><b>🌎 TOTAL Carbon Footprint:</b> " +
+                     QString("%1 kg CO₂/year").arg(totalCO2Footprint, 0, 'f', 2);
+    qDebug() << "Total Carbon Footprint: " << totalCO2Footprint;
+
+    // 🔹 Recomandări bazate pe amprentă
+    QString recommendations;
+    QString recColor;
+    QPixmap image;
+    if (totalCO2Footprint < 1000) {
+        recommendations = "🎉 <b>Great job!</b> Your carbon footprint is quite low. Keep up your eco-friendly habits!";
+        recColor = "#4CAF50"; // Verde
+        image.load(":/images/green_nature.jpg");
+    } else if (totalCO2Footprint < 5000) {
+        recommendations = "🌱 <b>You're doing well, but there's room for improvement!</b> Try using public transport or a bicycle more often.";
+        recColor = "#FFA500"; // Galben-Portocaliu
+        image.load(":/images/renewable_energy.jpg");
+    } else {
+        recommendations = "⚠️ <b>Your carbon footprint is quite high!</b> Consider reducing car usage, eating more plant-based foods, and conserving energy at home.";
+        recColor = "#FF3B30"; // Roșu
+        image.load(":/images/pollution.jpg");
+    }
+
+    // 🏆 Creare fereastră personalizată de dialog
+    QDialog *dialog = new QDialog(this);
+    dialog->setWindowTitle("Carbon Footprint Results");
+    dialog->setMinimumSize(500, 450);
+
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+
+    QLabel *imageLabel = new QLabel();
+    imageLabel->setPixmap(image.scaled(250, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    imageLabel->setAlignment(Qt::AlignCenter);
+    layout->addWidget(imageLabel);
+
+    QLabel *carbonDetailsLabel = new QLabel(resultDetails);
+    carbonDetailsLabel->setWordWrap(true);
+    carbonDetailsLabel->setStyleSheet("font-size: 14px; color: white; background-color: #2E7D32; padding: 10px; border-radius: 8px;");
+    layout->addWidget(carbonDetailsLabel);
+
+
+    QLabel *recLabel = new QLabel(recommendations);
+    recLabel->setWordWrap(true);
+    recLabel->setAlignment(Qt::AlignCenter);
+    recLabel->setStyleSheet(QString("font-size: 16px; font-weight: bold; color: %1;").arg(recColor));
+    layout->addWidget(recLabel);
+
+    QPushButton *closeButton = new QPushButton("Close");
+    connect(closeButton, &QPushButton::clicked, dialog, &QDialog::accept);
+    layout->addWidget(closeButton, 0, Qt::AlignCenter);
+
+    dialog->setLayout(layout);
+    dialog->exec();
 }
 
 QWidget* MainWindow::createHousePage() {
     housePage = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(housePage);
 
-    spaceEdit = new QLineEdit();
-    houseTypeCombo = new QComboBox();
-    houseTypeCombo->addItem("(Select Option)");
-    houseTypeCombo->addItems({"Studio", "Apartment", "House"});
-    electricityEdit = new QLineEdit();
-    gasEdit = new QLineEdit();
-    hotWaterEdit = new QLineEdit();
-    coldWaterEdit = new QLineEdit();
-    houseResultLabel = new QLabel();
+    // ✅ Scrollable container
+    QWidget *scrollWidget = new QWidget();
+    QVBoxLayout *scrollLayout = new QVBoxLayout(scrollWidget);
+    scrollLayout->setContentsMargins(20, 20, 20, 20);
+    scrollLayout->setSpacing(15);
 
-    QGroupBox *groupBox = new QGroupBox("Housing Details");
+    // ✅ Group Box for Home Inputs
+    QGroupBox *groupBox = new QGroupBox();
+    groupBox->setStyleSheet(
+        "QGroupBox {"
+        "    background-color: rgba(255,255,255,0.3);"
+        "    border-radius: 10px;"
+        "    padding: 15px;"
+        "    font-size: 20px;"
+        "    font-weight: bold;"
+        "    color: #2e7d32;"
+        "    margin-top: 15px;"
+        "}"
+        "QGroupBox::title {"
+        "    subcontrol-origin: margin;"
+        "    subcontrol-position: top left;"
+        "    padding: 10px 15px;"
+        "}"
+        );
+
     QVBoxLayout *groupLayout = new QVBoxLayout();
 
-    groupLayout->addWidget(new QLabel("Usable space (m²):"));
-    groupLayout->addWidget(spaceEdit);
+    countryCombo = new QComboBox();
+    countryCombo->addItems({"Romania", "Portugal", "Spain", "Ukraine"});
+    countryCombo->setStyleSheet(
+        "QComboBox {"
+        "    background-color: white;"
+        "    color: black;"
+        "    border: 2px solid #4CAF50;"
+        "    border-radius: 5px;"
+        "    padding: 5px;"
+        "    font-size: 14px;"
+        "} "
+        "QComboBox::drop-down {"
+        "    border: none;"
+        "    background: #4CAF50;"
+        "    width: 25px;"
+        "} "
+        "QComboBox::down-arrow {"
+        "    image: url(:/icons/down-arrow.png);"
+        "} "
+        "QComboBox QAbstractItemView {"
+        "    background: white;"
+        "    color: black;"
+        "    selection-background-color: #4CAF50;"
+        "    selection-color: white;"
+        "    border: 1px solid #4CAF50;"
+        "} "
+        "QComboBox::item {"
+        "    padding: 5px;"
+        "} "
+        "QComboBox::item:selected {"
+        "    background-color: #4CAF50;"
+        "    color: white;"
+        "} ");
+
+    houseTypeCombo = new QComboBox();
+    houseTypeCombo->addItems({"Studio", "Apartment", "House"});
+    houseTypeCombo->setStyleSheet(
+        "QComboBox {"
+        "    background-color: white;"
+        "    color: black;"
+        "    border: 2px solid #4CAF50;"
+        "    border-radius: 5px;"
+        "    padding: 5px;"
+        "    font-size: 14px;"
+        "} "
+        "QComboBox::drop-down {"
+        "    border: none;"
+        "    background: #4CAF50;"
+        "    width: 25px;"
+        "} "
+        "QComboBox::down-arrow {"
+        "    image: url(:/icons/down-arrow.png);"
+        "} "
+        "QComboBox QAbstractItemView {"
+        "    background: white;"
+        "    color: black;"
+        "    selection-background-color: #4CAF50;"
+        "    selection-color: white;"
+        "    border: 1px solid #4CAF50;"
+        "} "
+        "QComboBox::item {"
+        "    padding: 5px;"
+        "} "
+        "QComboBox::item:selected {"
+        "    background-color: #4CAF50;"
+        "    color: white;"
+        "} ");
+
+    spaceEdit = new QLineEdit();
+    spaceEdit->setValidator(new QDoubleValidator(0, 10000, 2, this));
+    spaceEdit->setLocale(QLocale::C);
+    spaceEdit->setText("0.0");
+
+    electricityEdit = new QLineEdit();
+    electricityEdit->setValidator(new QDoubleValidator(0, 10000, 2, this));
+    electricityEdit->setLocale(QLocale::C);
+    electricityEdit->setText("0.0");
+
+    gasEdit = new QLineEdit();
+    gasEdit->setValidator(new QDoubleValidator(0, 10000, 2, this));
+    gasEdit->setLocale(QLocale::C);
+    gasEdit->setText("0.0");
+
+    woodEdit = new QLineEdit();
+    woodEdit->setValidator(new QDoubleValidator(0, 10000, 2, this));
+    woodEdit->setLocale(QLocale::C);
+    woodEdit->setText("0.0");
+
+    numPersonsEdit = new QLineEdit();
+    houseResultLabel = new QLabel();
+
+    groupLayout->addWidget(new QLabel("Select your country:"));
+    groupLayout->addWidget(countryCombo);
     groupLayout->addWidget(new QLabel("Type of housing:"));
     groupLayout->addWidget(houseTypeCombo);
+    groupLayout->addWidget(new QLabel("Usable space (m²):"));
+    groupLayout->addWidget(spaceEdit);
     groupLayout->addWidget(new QLabel("Electricity consumption (kWh/month):"));
     groupLayout->addWidget(electricityEdit);
     groupLayout->addWidget(new QLabel("Natural gas consumption (m³/month):"));
     groupLayout->addWidget(gasEdit);
-    groupLayout->addWidget(new QLabel("Hot water consumtipon (liters/month):"));
-    groupLayout->addWidget(hotWaterEdit);
-    groupLayout->addWidget(new QLabel("Cold water consumption (liters/month):"));
-    groupLayout->addWidget(coldWaterEdit);
+    groupLayout->addWidget(new QLabel("Wood consumption (kg/month):"));
+    groupLayout->addWidget(woodEdit);
+    groupLayout->addWidget(new QLabel("Number of people in the household:"));
+    groupLayout->addWidget(numPersonsEdit);
 
     groupBox->setLayout(groupLayout);
 
     QPushButton *calculateButton = new QPushButton("Calculate");
+    calculateButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #4CAF50;"
+        "    color: white;"
+        "    font-size: 18px;"
+        "    padding: 10px 20px;"
+        "    border-radius: 8px;"
+        "    font-weight: bold;"
+        "}"
+        "QPushButton:hover { background-color: #388E3C; }"
+        );
     connect(calculateButton, &QPushButton::clicked, this, &MainWindow::calculateHouse);
 
-    layout->addWidget(groupBox);
-    layout->addWidget(calculateButton);
-    layout->addWidget(houseResultLabel);
-    layout->addStretch();
+    scrollLayout->addWidget(groupBox);
+    scrollLayout->addWidget(calculateButton, 0, Qt::AlignCenter);
+    scrollLayout->addWidget(houseResultLabel);
+    scrollLayout->addStretch();
+
+    // ✅ Scroll Area
+    QScrollArea *scrollArea = new QScrollArea();
+    scrollArea->setWidget(scrollWidget);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea->setStyleSheet(
+        "QScrollArea { border: none; background-color: transparent; }"
+        "QScrollArea QWidget { background-color: rgba(255, 255, 255, 0.6); border-radius: 10px; }"
+        "QScrollBar:vertical { background: rgba(0, 0, 0, 0.1); width: 10px; border-radius: 5px; }"
+        "QScrollBar::handle:vertical { background: rgba(76, 175, 80, 0.8); min-height: 30px; border-radius: 5px; }"
+        "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { background: none; border: none; }"
+        );
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(housePage);
+    mainLayout->addWidget(scrollArea);
 
     return housePage;
 }
+
+
+void MainWindow::calculateHouse() {
+    QLocale cLocale(QLocale::C);
+    bool ok;
+    double space = cLocale.toDouble(spaceEdit->text(), &ok);
+    if (!ok || space <= 0) {
+        QMessageBox::warning(this, "Input Error", "Please enter a valid usable space value.");
+        return;
+    }
+
+    double electricity = cLocale.toDouble(electricityEdit->text(), &ok);
+    if (!ok || electricity < 0) {
+        QMessageBox::warning(this, "Input Error", "Please enter a valid electricity consumption value.");
+        return;
+    }
+
+    double gas = cLocale.toDouble(gasEdit->text(), &ok);
+    if (!ok || gas < 0) {
+        QMessageBox::warning(this, "Input Error", "Please enter a valid natural gas consumption value.");
+        return;
+    }
+
+    double wood = cLocale.toDouble(woodEdit->text(), &ok);
+    if (!ok || wood < 0) {
+        QMessageBox::warning(this, "Input Error", "Please enter a valid wood consumption value.");
+        return;
+    }
+    int numPersons = numPersonsEdit->text().toInt(&ok);
+    if (!ok || numPersons <= 0) {
+        QMessageBox::warning(this, "Input Error", "Please enter a valid number of persons in the household.");
+        return;
+    }
+    QString selectedCountry = countryCombo->currentText();
+    QString houseType = houseTypeCombo->currentText();
+
+    // ✅ Ensure the selected country exists in the emission factors map
+    if (!FACTORI_EMISIE_TARI.contains(selectedCountry)) {
+        QMessageBox::warning(this, "Error", "Selected country is not available in the dataset.");
+        return;
+    }
+
+    // ✅ Use the selected country's emission factors
+    FactoriEmisie factori = FACTORI_EMISIE_TARI[selectedCountry];
+
+    Casa casa(electricity, gas, wood, space, numPersons, houseType, factori);
+    //double totalCO2 = casa.calculAC();
+    //houseResultLabel->setText(QString("Carbon footprint per person per year: %1 kg CO2").arg(totalCO2, 0, 'f', 2));
+
+    double co2Electricity = casa.emisiiCurentElectric() * 12;
+    double co2Gas = casa.emisiiGazeNaturale() * 12;
+    double co2Wood = casa.emisiiLemne() * 12;
+    double totalCO2 = co2Electricity + co2Gas + co2Wood;
+
+    // 🔹 Recomandări bazate pe amprentă
+    QString recommendations;
+    QString recColor;
+    QPixmap image;
+    if (totalCO2 < 1000) {
+        recommendations = "🎉 <b>Great job!</b> Your carbon footprint is low. Keep using energy efficiently!";
+        recColor = "#4CAF50"; // Verde
+        image.load(":/images/green_home.jpg");
+    } else if (totalCO2 < 5000) {
+        recommendations = "🌱 <b>You're doing okay!</b> Try using energy-saving appliances and reducing heating costs.";
+        recColor = "#FFA500"; // Galben-Portocaliu
+        image.load(":/images/energy_saving.jpg");
+    } else {
+        recommendations = "⚠️ <b>Your carbon footprint is quite high!</b> Consider using renewable energy sources and reducing heating and cooling consumption.";
+        recColor = "#FF3B30"; // Roșu
+        image.load(":/images/high_energy_use.jpg");
+    }
+
+    // 🏡 Creare fereastră personalizată de dialog
+    QDialog *dialog = new QDialog(this);
+    dialog->setWindowTitle("Home Carbon Footprint Results");
+    dialog->setMinimumSize(500, 450);
+
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+
+    QLabel *imageLabel = new QLabel();
+    imageLabel->setPixmap(image.scaled(250, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    imageLabel->setAlignment(Qt::AlignCenter);
+    layout->addWidget(imageLabel);
+
+    QLabel *carbonDetailsLabel = new QLabel(QString(
+                                                "🔌 <b>Electricity Emissions:</b> %1 kg CO₂/year<br>"
+                                                "🔥 <b>Gas Emissions:</b> %2 kg CO₂/year<br>"
+                                                "🌲 <b>Wood Emissions:</b> %3 kg CO₂/year<br>"
+                                                "<hr>🏡 <b>Total Home Carbon Footprint:</b> %4 kg CO₂/year<br><br>")
+                                                .arg(co2Electricity, 0, 'f', 2)
+                                                .arg(co2Gas, 0, 'f', 2)
+                                                .arg(co2Wood, 0, 'f', 2)
+                                                .arg(totalCO2, 0, 'f', 2));
+    carbonDetailsLabel->setWordWrap(true);
+    carbonDetailsLabel->setStyleSheet("font-size: 14px; color: white; background-color: #2E7D32; padding: 10px; border-radius: 8px;");
+    layout->addWidget(carbonDetailsLabel);
+
+    QLabel *recLabel = new QLabel(recommendations);
+    recLabel->setWordWrap(true);
+    recLabel->setAlignment(Qt::AlignCenter);
+    recLabel->setStyleSheet(QString("font-size: 16px; font-weight: bold; color: %1;").arg(recColor));
+    layout->addWidget(recLabel);
+
+    QPushButton *closeButton = new QPushButton("Close");
+    connect(closeButton, &QPushButton::clicked, dialog, &QDialog::accept);
+    layout->addWidget(closeButton, 0, Qt::AlignCenter);
+
+    dialog->setLayout(layout);
+    dialog->exec();
+}
+
 
 QWidget* MainWindow::createDietPage() {
     dietPage = new QWidget();
@@ -375,56 +1366,6 @@ void MainWindow::showDietPage() {
     stackedWidget->setCurrentIndex(2);
 }
 
-/*void MainWindow::calculateIndividual() {
-    bool ok1, ok2;
-    int breaths = breathsEdit->text().toInt(&ok1);
-    double distance = distanceEdit->text().toDouble(&ok2);
-
-    if (!ok1 || !ok2) {
-        QMessageBox::warning(this, "Eroare", "Vă rugăm introduceți valori numerice valide!");
-        return;
-    }
-
-    TipTransport transport = transportTypeCombo->currentIndex() == 0 ? MASINA_PERSONALA : TRANSPORT_COMUN;
-    Persoana persoana(breaths, distance, transport);
-
-    double result = persoana.calculTotalAC();
-    individualResultLabel->setText(QString("Amprenta de carbon: %1 kg CO2/an").arg(result, 0, 'f', 2));
-}*/
-
-void MainWindow::calculateHouse() {
-    if (houseTypeCombo->currentIndex() == 0) { // Dacă nu este selectat un tip de locuință
-        QMessageBox::warning(this, "Error", "Please slect a housing type!");
-        return;
-    }
-    bool ok[6];
-    double space = spaceEdit->text().toDouble(&ok[0]);
-    double electricity = electricityEdit->text().toDouble(&ok[1]);
-    double gas = gasEdit->text().toDouble(&ok[2]);
-    double hotWater = hotWaterEdit->text().toDouble(&ok[3]);
-    double coldWater = coldWaterEdit->text().toDouble(&ok[4]);
-
-    if (!ok[0] || !ok[1] || !ok[2] || !ok[3] || !ok[4]) {
-        QMessageBox::warning(this, "Error", "Please insert numbers in all the fields!");
-        return;
-    }
-
-    if (space < 0 || electricity < 0 || gas < 0 || hotWater < 0 || coldWater < 0) {
-        QMessageBox::warning(this, "Error", "Please insert positive numbers in all the fields!");
-        return;
-    }
-
-    TipLocuinta tipLocuinta;
-    switch(houseTypeCombo->currentIndex()) {
-    case 1: tipLocuinta = GARSONIERA; break;
-    case 2: tipLocuinta = APARTAMENT; break;
-    default: tipLocuinta = CASA;
-    }
-
-    Casa casa(tipLocuinta, space, electricity, gas, hotWater, coldWater);
-    double result = casa.calculAC();
-    houseResultLabel->setText(QString("Carbon footprint: %1 kg CO2/year").arg(result, 0, 'f', 2));
-}
 
 void MainWindow::calculateDiet() {
     if (dietTypeCombo->currentIndex() == 0) { // Dacă nu este selectat un regim alimentar
