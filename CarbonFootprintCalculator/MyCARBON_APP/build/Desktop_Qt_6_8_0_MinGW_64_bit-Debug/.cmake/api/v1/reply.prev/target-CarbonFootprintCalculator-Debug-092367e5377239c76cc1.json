@@ -27,21 +27,21 @@
 		],
 		"files" : 
 		[
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreMacros.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreMacros.cmake",
 			"CMakeLists.txt",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsTargets.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsConfig.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6/Qt6Config.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreTargets.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreConfig.cmake",
-			"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsDependencies.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6EntryPointPrivate/Qt6EntryPointPrivateTargets.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6EntryPointPrivate/Qt6EntryPointPrivateConfig.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreDependencies.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiTargets.cmake",
-			"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiConfig.cmake"
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsTargets.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsConfig.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6/Qt6Config.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreTargets.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreConfig.cmake",
+			"D:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsDependencies.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6EntryPointPrivate/Qt6EntryPointPrivateTargets.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6EntryPointPrivate/Qt6EntryPointPrivateConfig.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreDependencies.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiTargets.cmake",
+			"D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiConfig.cmake"
 		],
 		"nodes" : 
 		[
@@ -322,32 +322,32 @@
 			[
 				{
 					"backtrace" : 0,
-					"path" : "C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CarbonFootprintCalculator_autogen/include"
+					"path" : "D:/Documentele mele/Poli docs/ANUL II/POO/MyCarbonAPP/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CarbonFootprintCalculator_autogen/include"
 				},
 				{
 					"backtrace" : 14,
 					"isSystem" : true,
-					"path" : "C:/Qt/6.8.0/mingw_64/include/QtCore"
+					"path" : "D:/Qt/6.8.0/mingw_64/include/QtCore"
 				},
 				{
 					"backtrace" : 14,
 					"isSystem" : true,
-					"path" : "C:/Qt/6.8.0/mingw_64/include"
+					"path" : "D:/Qt/6.8.0/mingw_64/include"
 				},
 				{
 					"backtrace" : 14,
 					"isSystem" : true,
-					"path" : "C:/Qt/6.8.0/mingw_64/mkspecs/win32-g++"
+					"path" : "D:/Qt/6.8.0/mingw_64/mkspecs/win32-g++"
 				},
 				{
 					"backtrace" : 6,
 					"isSystem" : true,
-					"path" : "C:/Qt/6.8.0/mingw_64/include/QtWidgets"
+					"path" : "D:/Qt/6.8.0/mingw_64/include/QtWidgets"
 				},
 				{
 					"backtrace" : 6,
 					"isSystem" : true,
-					"path" : "C:/Qt/6.8.0/mingw_64/include/QtGui"
+					"path" : "D:/Qt/6.8.0/mingw_64/include/QtGui"
 				}
 			],
 			"language" : "CXX",
@@ -411,17 +411,17 @@
 			},
 			{
 				"backtrace" : 6,
-				"fragment" : "C:\\Qt\\6.8.0\\mingw_64\\lib\\libQt6Widgets.a",
+				"fragment" : "D:\\Qt\\6.8.0\\mingw_64\\lib\\libQt6Widgets.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 13,
-				"fragment" : "C:\\Qt\\6.8.0\\mingw_64\\lib\\libQt6Gui.a",
+				"fragment" : "D:\\Qt\\6.8.0\\mingw_64\\lib\\libQt6Gui.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 14,
-				"fragment" : "C:\\Qt\\6.8.0\\mingw_64\\lib\\libQt6Core.a",
+				"fragment" : "D:\\Qt\\6.8.0\\mingw_64\\lib\\libQt6Core.a",
 				"role" : "libraries"
 			},
 			{
@@ -441,7 +441,7 @@
 			},
 			{
 				"backtrace" : 32,
-				"fragment" : "C:\\Qt\\6.8.0\\mingw_64\\lib\\libQt6EntryPoint.a",
+				"fragment" : "D:\\Qt\\6.8.0\\mingw_64\\lib\\libQt6EntryPoint.a",
 				"role" : "libraries"
 			},
 			{

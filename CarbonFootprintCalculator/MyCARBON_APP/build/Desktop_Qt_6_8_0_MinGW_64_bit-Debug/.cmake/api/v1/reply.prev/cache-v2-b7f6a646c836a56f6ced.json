@@ -15,7 +15,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/addr2line.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/addr2line.exe"
 		},
 		{
 			"name" : "CMAKE_AR",
@@ -31,7 +31,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/ar.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/ar.exe"
 		},
 		{
 			"name" : "CMAKE_BUILD_TYPE",
@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug"
+			"value" : "d:/Documentele mele/Poli docs/ANUL II/POO/MyCarbonAPP/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -115,7 +115,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Qt/Tools/CMake_64/bin/cmake.exe"
+			"value" : "D:/Qt/Tools/CMake_64/bin/cmake.exe"
 		},
 		{
 			"name" : "CMAKE_CPACK_COMMAND",
@@ -127,7 +127,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Qt/Tools/CMake_64/bin/cpack.exe"
+			"value" : "D:/Qt/Tools/CMake_64/bin/cpack.exe"
 		},
 		{
 			"name" : "CMAKE_CTEST_COMMAND",
@@ -139,7 +139,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Qt/Tools/CMake_64/bin/ctest.exe"
+			"value" : "D:/Qt/Tools/CMake_64/bin/ctest.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER",
@@ -155,7 +155,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/g++.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/g++.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_AR",
@@ -171,7 +171,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/gcc-ar.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/gcc-ar.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_RANLIB",
@@ -187,7 +187,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/gcc-ranlib.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/gcc-ranlib.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_FLAGS",
@@ -319,7 +319,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/gcc.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/gcc.exe"
 		},
 		{
 			"name" : "CMAKE_C_OUTPUT_EXTENSION",
@@ -347,7 +347,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/dlltool.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/dlltool.exe"
 		},
 		{
 			"name" : "CMAKE_EDIT_COMMAND",
@@ -359,7 +359,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Qt/Tools/CMake_64/bin/cmake-gui.exe"
+			"value" : "D:/Qt/Tools/CMake_64/bin/cmake-gui.exe"
 		},
 		{
 			"name" : "CMAKE_EXECUTABLE_FORMAT",
@@ -479,7 +479,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/pkgRedirects"
+			"value" : "D:/Documentele mele/Poli docs/ANUL II/POO/MyCarbonAPP/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -563,7 +563,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP"
+			"value" : "D:/Documentele mele/Poli docs/ANUL II/POO/MyCarbonAPP/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP"
 		},
 		{
 			"name" : "CMAKE_INSTALL_BINDIR",
@@ -847,7 +847,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/ld.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/ld.exe"
 		},
 		{
 			"name" : "CMAKE_MAKE_PROGRAM",
@@ -863,7 +863,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/Ninja/ninja.exe"
+			"value" : "D:/Qt/Tools/Ninja/ninja.exe"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -959,7 +959,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/nm.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/nm.exe"
 		},
 		{
 			"name" : "CMAKE_NUMBER_OF_MAKEFILES",
@@ -987,7 +987,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/objcopy.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/objcopy.exe"
 		},
 		{
 			"name" : "CMAKE_OBJDUMP",
@@ -1003,7 +1003,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/objdump.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/objdump.exe"
 		},
 		{
 			"name" : "CMAKE_PLATFORM_INFO_INITIALIZED",
@@ -1027,7 +1027,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64"
+			"value" : "D:/Qt/6.8.0/mingw_64"
 		},
 		{
 			"name" : "CMAKE_PROJECT_DESCRIPTION",
@@ -1063,7 +1063,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qtc/package-manager/auto-setup.cmake"
+			"value" : "D:/Documentele mele/Poli docs/ANUL II/POO/MyCarbonAPP/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qtc/package-manager/auto-setup.cmake"
 		},
 		{
 			"name" : "CMAKE_PROJECT_NAME",
@@ -1151,7 +1151,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/ranlib.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/ranlib.exe"
 		},
 		{
 			"name" : "CMAKE_RC_COMPILER",
@@ -1167,7 +1167,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/windres.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/windres.exe"
 		},
 		{
 			"name" : "CMAKE_RC_COMPILER_WORKS",
@@ -1275,7 +1275,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/readelf.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/readelf.exe"
 		},
 		{
 			"name" : "CMAKE_ROOT",
@@ -1287,7 +1287,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Qt/Tools/CMake_64/share/cmake-3.29"
+			"value" : "D:/Qt/Tools/CMake_64/share/cmake-3.29"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1495,7 +1495,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/Tools/mingw1310_64/bin/strip.exe"
+			"value" : "D:/Qt/Tools/mingw1310_64/bin/strip.exe"
 		},
 		{
 			"name" : "CMAKE_TAPI",
@@ -1539,7 +1539,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug"
+			"value" : "D:/Documentele mele/Poli docs/ANUL II/POO/MyCarbonAPP/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug"
 		},
 		{
 			"name" : "CarbonFootprintCalculator_IS_TOP_LEVEL",
@@ -1563,7 +1563,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP"
+			"value" : "D:/Documentele mele/Poli docs/ANUL II/POO/MyCarbonAPP/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP"
 		},
 		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Threads",
@@ -1647,7 +1647,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6"
+			"value" : "D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6"
 		},
 		{
 			"name" : "QT_FEATURE_abstractbutton",
@@ -6183,7 +6183,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/bin/qmake.exe"
+			"value" : "D:/Qt/6.8.0/mingw_64/bin/qmake.exe"
 		},
 		{
 			"name" : "Qt6CoreTools_DIR",
@@ -6195,7 +6195,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6CoreTools"
+			"value" : "D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6CoreTools"
 		},
 		{
 			"name" : "Qt6Core_DIR",
@@ -6207,7 +6207,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core"
+			"value" : "D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core"
 		},
 		{
 			"name" : "Qt6EntryPointPrivate_DIR",
@@ -6219,7 +6219,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6EntryPointPrivate"
+			"value" : "D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6EntryPointPrivate"
 		},
 		{
 			"name" : "Qt6GuiTools_DIR",
@@ -6231,7 +6231,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6GuiTools"
+			"value" : "D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6GuiTools"
 		},
 		{
 			"name" : "Qt6Gui_DIR",
@@ -6243,7 +6243,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Gui"
+			"value" : "D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Gui"
 		},
 		{
 			"name" : "Qt6WidgetsTools_DIR",
@@ -6255,7 +6255,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6WidgetsTools"
+			"value" : "D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6WidgetsTools"
 		},
 		{
 			"name" : "Qt6Widgets_DIR",
@@ -6267,7 +6267,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Widgets"
+			"value" : "D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Widgets"
 		},
 		{
 			"name" : "Qt6ZlibPrivate_DIR",
@@ -6279,7 +6279,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6ZlibPrivate"
+			"value" : "D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6ZlibPrivate"
 		},
 		{
 			"name" : "Qt6_DIR",
@@ -6291,7 +6291,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6"
+			"value" : "D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6"
 		},
 		{
 			"name" : "Vulkan_GLSLANG_VALIDATOR_EXECUTABLE",
@@ -6307,7 +6307,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/ucrt64/bin/glslangValidator.exe"
+			"value" : "Vulkan_GLSLANG_VALIDATOR_EXECUTABLE-NOTFOUND"
 		},
 		{
 			"name" : "Vulkan_GLSLC_EXECUTABLE",
@@ -6323,7 +6323,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/ucrt64/bin/glslc.exe"
+			"value" : "Vulkan_GLSLC_EXECUTABLE-NOTFOUND"
 		},
 		{
 			"name" : "Vulkan_INCLUDE_DIR",
@@ -6367,7 +6367,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Qt/6.8.0/mingw_64/bin/windeployqt.exe"
+			"value" : "D:/Qt/6.8.0/mingw_64/bin/windeployqt.exe"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",

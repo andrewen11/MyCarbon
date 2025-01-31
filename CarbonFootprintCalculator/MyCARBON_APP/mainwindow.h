@@ -42,6 +42,7 @@ private slots:
     void onWasteTypeChanged(QListWidgetItem *item);
     void openInfoWindow();
     void goBack();  // ✅ Slot to handle back button action
+    void showDietCarbonFootprintPopup(double totalFoodCO2, const QString &carbonDetails);
 
 private:
 
@@ -80,6 +81,7 @@ private:
     QLabel *dietResultLabel;
     QLabel *backgroundLabel;
     QPixmap originalBackground;
+    QMap<QString, QLineEdit*> foodInputs;
     void updateBackground();
 
     // Waste section

@@ -44,7 +44,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "CarbonFootprintCalculator::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-CarbonFootprintCalculator-Debug-7394eaed0f0f126b45e7.json",
+					"jsonFile" : "target-CarbonFootprintCalculator-Debug-092367e5377239c76cc1.json",
 					"name" : "CarbonFootprintCalculator",
 					"projectIndex" : 0
 				},
@@ -68,8 +68,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug",
-		"source" : "C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP"
+		"build" : "D:/Documentele mele/Poli docs/ANUL II/POO/MyCarbonAPP/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug",
+		"source" : "D:/Documentele mele/Poli docs/ANUL II/POO/MyCarbonAPP/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP"
 	},
 	"version" : 
 	{

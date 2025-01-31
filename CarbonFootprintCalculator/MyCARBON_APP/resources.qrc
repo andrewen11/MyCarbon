@@ -10,5 +10,8 @@
     <file>images/energy_saving.jpg</file>
     <file>images/high_energy_use.jpg</file>
     <file>images/info_background.png</file>
+    <file>images/high_footprint.png</file>
+    <file>images/neutral_footprint.png</file>
+    <file>images/low_footprint.png</file>
   </qresource>
 </RCC>

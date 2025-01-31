@@ -154,6 +154,7 @@ void MainWindow::setupUI() {
     QPushButton *individualButton = new QPushButton("👤 Individual", this);
     QPushButton *houseButton = new QPushButton("🏠 Home", this);
     QPushButton *dietButton = new QPushButton("🥗 Diet", this);
+    connect(dietButton, &QPushButton::clicked, this, &MainWindow::showDietPage);
 
     QString buttonStyle =
         "QPushButton {"
@@ -555,12 +556,53 @@ void MainWindow::onTransportTypeChanged(QListWidgetItem *item) {
             QLabel *distanceLabel = new QLabel("Distance (km):");
             QLineEdit *distanceEdit = new QLineEdit();
             distanceEdit->setPlaceholderText("Enter monthly distance (km)");
-            distanceEdit->setStyleSheet("border: 1px solid #4CAF50; border-radius: 5px; padding: 5px;");
+            distanceEdit->setStyleSheet(
+                "QLineEdit {"
+                "    background-color: white;"
+                "    border: 1px solid #4CAF50;"
+                "    border-radius: 5px;"
+                "    padding: 5px;"
+                "    font-size: 14px;"
+                "} "
+                );
 
             QLabel *fuelLabel = new QLabel("Fuel Type:");
             QComboBox *fuelCombo = new QComboBox();
             fuelCombo->addItems({"Gasoline", "Diesel", "Electric", "LPG"});
-            fuelCombo->setStyleSheet("border: 1px solid #4CAF50; border-radius: 5px; padding: 5px;");
+
+            // ✅ Apply the same styling as the disposal method combo box
+            fuelCombo->setStyleSheet(
+                "QComboBox {"
+                "    background-color: white;"
+                "    color: black;"
+                "    border: 2px solid #4CAF50;"
+                "    border-radius: 5px;"
+                "    padding: 5px;"
+                "    font-size: 14px;"
+                "} "
+                "QComboBox::drop-down {"
+                "    border: none;"
+                "    background: #4CAF50;"
+                "    width: 25px;"
+                "} "
+                "QComboBox::down-arrow {"
+                "    image: url(:/icons/down-arrow.png);"  // ✅ Use a custom arrow icon
+                "} "
+                "QComboBox QAbstractItemView {"
+                "    background: white;"
+                "    color: black;"
+                "    selection-background-color: #4CAF50;"
+                "    selection-color: white;"
+                "    border: 1px solid #4CAF50;"
+                "} "
+                "QComboBox::item {"
+                "    padding: 5px;"
+                "} "
+                "QComboBox::item:selected {"
+                "    background-color: #4CAF50;"
+                "    color: white;"
+                "} "
+                );
 
             transportFormLayout->addRow(distanceLabel, distanceEdit);
             transportFormLayout->addRow(fuelLabel, fuelCombo);
@@ -1323,35 +1365,6 @@ void MainWindow::calculateHouse() {
     dialog->exec();
 }
 
-
-QWidget* MainWindow::createDietPage() {
-    dietPage = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(dietPage);
-
-    dietTypeCombo = new QComboBox();
-    dietTypeCombo->addItem("(Select Option)");
-    dietTypeCombo->addItems({"Vegan", "Vegetarian", "Omnivore"});
-    dietResultLabel = new QLabel();
-
-    QGroupBox *groupBox = new QGroupBox("Diet");
-    QVBoxLayout *groupLayout = new QVBoxLayout();
-
-    groupLayout->addWidget(new QLabel("Diet type:"));
-    groupLayout->addWidget(dietTypeCombo);
-
-    groupBox->setLayout(groupLayout);
-
-    QPushButton *calculateButton = new QPushButton("Calculate");
-    connect(calculateButton, &QPushButton::clicked, this, &MainWindow::calculateDiet);
-
-    layout->addWidget(groupBox);
-    layout->addWidget(calculateButton);
-    layout->addWidget(dietResultLabel);
-    layout->addStretch();
-
-    return dietPage;
-}
-
 void MainWindow::showIndividualPage() {
     stackedWidget->setCurrentIndex(0);
 }
@@ -1361,23 +1374,261 @@ void MainWindow::showHousePage() {
 }
 
 void MainWindow::showDietPage() {
-    stackedWidget->setCurrentIndex(2);
+    stackedWidget->setCurrentWidget(dietPage);
 }
 
+QWidget* MainWindow::createDietPage() {
+    dietPage = new QWidget();
+
+    // Container principal pentru scroll
+    QWidget *scrollWidget = new QWidget();
+    QVBoxLayout *scrollLayout = new QVBoxLayout(scrollWidget);
+    scrollLayout->setContentsMargins(20, 20, 20, 20);
+    scrollLayout->setSpacing(15);
+
+    // Grup pentru consumul de alimente
+    QGroupBox *foodGroup = new QGroupBox("Weekly Food Consumption (g)");
+    foodGroup->setStyleSheet(
+        "QGroupBox {"
+        "    background-color: rgba(255,255,255,0.4);"
+        "    border-radius: 10px;"
+        "    padding: 15px;"
+        "    font-size: 20px;"
+        "    font-weight: bold;"
+        "    color: #2e7d32;"
+        "    margin-top: 15px;"
+        "} "
+        "QGroupBox::title {"
+        "    subcontrol-origin: margin;"
+        "    subcontrol-position: top left;"
+        "    padding: 10px 15px;"
+        "} "
+        );
+
+    QVBoxLayout *foodLayout = new QVBoxLayout();
+
+    QMap<QString, QString> foodItems = {
+        {"White Meat", "🍗"}, {"Red Meat", "🥩"}, {"Fish", "🐟"},
+        {"Dairy", "🥛"}, {"Vegetables", "🥦"}, {"Fruits", "🍎"},
+        {"Grains", "🌾"}, {"Sweets", "🍬"}, {"Juices", "🥤"},
+        {"Ultra-Processed Food", "🍟"}
+    };
+
+    for (const QString &food : foodItems.keys()) {
+        QLabel *label = new QLabel(foodItems[food] + " " + food + ":");
+        QLineEdit *edit = new QLineEdit();
+        edit->setValidator(new QDoubleValidator(0, 100000, 2, this)); // până la 100.000g
+        edit->setPlaceholderText("Enter weekly consumption in grams");
+        edit->setStyleSheet(
+            "QLineEdit {"
+            "    background-color: white;"
+            "    border: 1px solid #4CAF50;"
+            "    border-radius: 5px;"
+            "    padding: 5px;"
+            "    font-size: 14px;"
+            "} "
+            );
+        foodLayout->addWidget(label);
+        foodLayout->addWidget(edit);
+        foodInputs.insert(food, edit);
+    }
+
+    foodGroup->setLayout(foodLayout);
+    scrollLayout->addWidget(foodGroup);
+
+    // Buton pentru calculare
+    QPushButton *calculateButton = new QPushButton("Calculate Carbon Footprint");
+    calculateButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #4CAF50;"
+        "    color: white;"
+        "    font-size: 18px;"
+        "    padding: 10px 20px;"
+        "    border-radius: 8px;"
+        "    font-weight: bold;"
+        "} "
+        "QPushButton:hover { background-color: #388E3C; }"
+        );
+    connect(calculateButton, &QPushButton::clicked, this, &MainWindow::calculateDiet);
+    scrollLayout->addWidget(calculateButton, 0, Qt::AlignCenter);
+
+    // Rezultatul calculului
+    dietResultLabel = new QLabel();
+    dietResultLabel->setWordWrap(true);
+    dietResultLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #2e7d32;");
+    scrollLayout->addWidget(dietResultLabel);
+
+    // ✅ Facem containerul scrollabil
+    QScrollArea *scrollArea = new QScrollArea();
+    scrollArea->setWidget(scrollWidget);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+    // ✅ Apply White Transparent Background with Green Border
+    scrollArea->setStyleSheet(
+        "QScrollArea {"
+        "    border: none;"  // Remove any black border
+        "    background-color: transparent;"  // Make background blend
+        "} "
+        "QScrollArea QWidget {"
+        "    background-color: rgba(255, 255, 255, 0.6);"  // ✅ White transparent
+        "    border-radius: 10px;"  // ✅ Rounded corners
+        "} "
+        "QScrollBar:vertical {"
+        "    border: none;"
+        "    background: rgba(0, 0, 0, 0.1);"  // ✅ Light scrollbar background
+        "    width: 10px;"
+        "    margin: 5px 0 5px 0;"
+        "    border-radius: 5px;"
+        "} "
+        "QScrollBar::handle:vertical {"
+        "    background: rgba(76, 175, 80, 0.8);"  // ✅ Green scroll handle
+        "    min-height: 30px;"
+        "    border-radius: 5px;"
+        "} "
+        "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {"
+        "    background: none;"
+        "    border: none;"
+        "}"
+        );
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(dietPage);
+    mainLayout->addWidget(scrollArea);
+
+    return dietPage;
+}
 
 void MainWindow::calculateDiet() {
-    if (dietTypeCombo->currentIndex() == 0) { // Dacă nu este selectat un regim alimentar
-        QMessageBox::warning(this, "Error", "Please select a diet type!");
-        return;
-    }
-    TipRegim regim;
-    switch(dietTypeCombo->currentIndex()) {
-    case 1: regim = VEGAN; break;
-    case 2: regim = VEGETARIAN; break;
-    default: regim = OMNIVOR;
+    qDebug() << "Calculating Diet Carbon Footprint...";
+
+    double totalFoodCO2 = 0.0;
+    QString foodDetails;
+
+    // ✅ Updated emission factors
+    QMap<QString, double> foodFactors = {
+        {"White Meat", 6.0},   // 🍗 Chicken & Turkey
+        {"Red Meat", 32.0},    // 🥩 Beef, Lamb & Pork (Arithmetic Mean)
+        {"Fish", 6.0},         // 🐟 Fish
+        {"Dairy", 3.2},        // 🥛 Dairy
+        {"Vegetables", 2.0},   // 🥦 Vegetables
+        {"Fruits", 3.0},       // 🍎 Fruits
+        {"Grains", 2.7},       // 🌾 Grains
+        {"Sweets", 5.4},       // 🍬 Sweets
+        {"Juices", 0.5},       // 🥤 Juices
+        {"Ultra-Processed Food", 5.0} // 🍟 Processed Foods
+    };
+
+    for (const QString &food : foodInputs.keys()) {
+        bool ok;
+        double quantityGramsPerWeek = foodInputs[food]->text().toDouble(&ok);
+        if (!ok || quantityGramsPerWeek < 0) {
+            QMessageBox::warning(this, "Input Error", "Please enter a valid amount for " + food);
+            return;
+        }
+
+        // ✅ Convert grams → kg per week
+        double quantityKgPerWeek = quantityGramsPerWeek / 1000.0;
+
+        // ✅ Convert weekly consumption to annual consumption
+        double quantityKgPerYear = quantityKgPerWeek * 52;
+
+        // ✅ Calculate annual carbon footprint
+        double foodCO2 = quantityKgPerYear * foodFactors[food];
+        totalFoodCO2 += foodCO2;
+
+        foodDetails += QString("🍽 %1: %2 kg CO₂/year<br>")
+                           .arg(food)
+                           .arg(foodCO2, 0, 'f', 2);
     }
 
-    RegimAlimentar regimAlimentar(regim);
-    double result = regimAlimentar.calculAC();
-    dietResultLabel->setText(QString("Carbon footprint: %1 kg CO2/year").arg(result, 0, 'f', 2));
+    // 🌎 **Prepare pop-up text**
+    QString resultText = "<b>🌱 Diet Carbon Footprint:</b><br>";
+    resultText += foodDetails;
+    resultText += "<hr><b>🍽 TOTAL Diet Emissions:</b> " +
+                  QString("%1 kg CO₂/year").arg(totalFoodCO2, 0, 'f', 2);
+
+    // ✅ Show the pop-up with recommendations & dynamic image
+    showDietCarbonFootprintPopup(totalFoodCO2, resultText);
 }
+
+
+void MainWindow::showDietCarbonFootprintPopup(double totalFoodCO2, const QString &carbonDetails) {
+    // Create the pop-up window
+    QDialog *popup = new QDialog(this);
+    popup->setWindowTitle("Diet Carbon Footprint");
+    popup->setFixedSize(400, 600);
+    popup->setStyleSheet(
+        "QDialog {"
+        "    background-color: white;"
+        "    border-radius: 10px;"
+        "    padding: 15px;"
+        "}"
+        );
+
+    QVBoxLayout *layout = new QVBoxLayout(popup);
+
+    // ✅ Determine recommendation level & image
+    QString recommendation;
+    QString colorStyle;
+    QString imagePath;
+
+    if (totalFoodCO2 > 2000) {  // High Carbon Footprint (Red)
+        recommendation = "⚠️ Your carbon footprint is **high**.\nConsider reducing red meat and processed foods.";
+        colorStyle = "color: red; font-size: 16px; font-weight: bold;";
+        imagePath = ":/images/high_footprint.png";  // Set your high footprint image path
+    } else if (totalFoodCO2 > 1000) {  // Neutral (Yellow-Orange)
+        recommendation = "⚠️ Your carbon footprint is **moderate**.\nTry incorporating more plant-based foods.";
+        colorStyle = "color: orange; font-size: 16px; font-weight: bold;";
+        imagePath = ":/images/neutral_footprint.png";  // Set your neutral footprint image path
+    } else {  // Low Carbon Footprint (Green)
+        recommendation = "✅ Your carbon footprint is **low**.\nGreat job! Keep maintaining a sustainable diet.";
+        colorStyle = "color: green; font-size: 16px; font-weight: bold;";
+        imagePath = ":/images/low_footprint.png";  // Set your low footprint image path
+    }
+
+    // ✅ Image label (dynamic)
+    QLabel *imageLabel = new QLabel();
+    QPixmap image(imagePath);
+    imageLabel->setPixmap(image.scaled(150, 150, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    imageLabel->setAlignment(Qt::AlignCenter);
+    layout->addWidget(imageLabel);
+
+    // ✅ Title label
+    QLabel *titleLabel = new QLabel("🌱 Your Diet Carbon Footprint:");
+    titleLabel->setStyleSheet("font-size: 20px; font-weight: bold; color: #2e7d32;");
+    titleLabel->setAlignment(Qt::AlignCenter);
+    layout->addWidget(titleLabel);
+
+    // ✅ Carbon footprint details
+    QLabel *detailsLabel = new QLabel(carbonDetails);
+    detailsLabel->setWordWrap(true);
+    detailsLabel->setStyleSheet("font-size: 14px; padding: 10px;");
+    layout->addWidget(detailsLabel);
+
+    // ✅ Recommendation label
+    QLabel *recommendationLabel = new QLabel(recommendation);
+    recommendationLabel->setStyleSheet(colorStyle);
+    recommendationLabel->setWordWrap(true);
+    recommendationLabel->setAlignment(Qt::AlignCenter);
+    layout->addWidget(recommendationLabel);
+
+    // ✅ Close button
+    QPushButton *closeButton = new QPushButton("Close");
+    closeButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #4CAF50;"
+        "    color: white;"
+        "    font-size: 16px;"
+        "    padding: 8px 16px;"
+        "    border-radius: 5px;"
+        "    font-weight: bold;"
+        "} "
+        "QPushButton:hover { background-color: #388E3C; }"
+        );
+    connect(closeButton, &QPushButton::clicked, popup, &QDialog::accept);
+    layout->addWidget(closeButton, 0, Qt::AlignCenter);
+
+    popup->setLayout(layout);
+    popup->exec();  // Show the pop-up window
+}
+
