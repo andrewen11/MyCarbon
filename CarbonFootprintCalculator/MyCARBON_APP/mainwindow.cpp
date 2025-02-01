@@ -125,7 +125,7 @@ void MainWindow::setupUI() {
     titleLabel->setStyleSheet("font-size: 28px; font-weight: bold; color: #2e7d32; margin-bottom: 10px;");
 
     // ✅ "Info" Button (Dreapta)
-    infoButton = new QPushButton("Info", this);
+    infoButton = new QPushButton("Help", this);
     infoButton->setFixedSize(90, 43);
     infoButton->setStyleSheet(
         "QPushButton {"
@@ -553,7 +553,7 @@ void MainWindow::onTransportTypeChanged(QListWidgetItem *item) {
     // 🚗 Personal Car
     if (transportName == "Personal Car") {
         if (checked && !distanceInputs.contains(transportName)) {
-            QLabel *distanceLabel = new QLabel("Distance (km):");
+            QLabel *distanceLabel = new QLabel("Personal Car Distance (km):");
             QLineEdit *distanceEdit = new QLineEdit();
             distanceEdit->setPlaceholderText("Enter monthly distance (km)");
             distanceEdit->setStyleSheet(
@@ -566,7 +566,7 @@ void MainWindow::onTransportTypeChanged(QListWidgetItem *item) {
                 "} "
                 );
 
-            QLabel *fuelLabel = new QLabel("Fuel Type:");
+            QLabel *fuelLabel = new QLabel("Personal Car Fuel Type:");
             QComboBox *fuelCombo = new QComboBox();
             fuelCombo->addItems({"Gasoline", "Diesel", "Electric", "LPG"});
 
@@ -788,7 +788,7 @@ void MainWindow::onWasteTypeChanged(QListWidgetItem *item) {
     bool checked = (item->checkState() == Qt::Checked);
 
     if (checked) {
-        QLabel *amountLabel = new QLabel(wasteName + " Amount (kg):");
+        QLabel *amountLabel = new QLabel(wasteName + " Amount (g):");
         QLineEdit *amountEdit = new QLineEdit();
         amountEdit->setPlaceholderText("Enter monthly waste amount");
         amountEdit->setValidator(new QDoubleValidator(0.00, 1000.00, 2, this));
@@ -1010,7 +1010,7 @@ void MainWindow::calculateIndividual() {
                             (method == "Recycling") ? EMISIE_GUNOI_RECICLARE :
                             EMISIE_GUNOI_COMPOST;
 
-        double wasteCO2 = factor * amount * 12;
+        double wasteCO2 = factor * amount * 12 / 1000;
         totalWasteCO2 += wasteCO2;
         wasteDetails += QString("%1 %2 (%3 kg): %4 kg CO₂/year<br>")
                             .arg(wasteEmoji).arg(waste).arg(amount).arg(wasteCO2, 0, 'f', 2);
@@ -1339,10 +1339,10 @@ void MainWindow::calculateHouse() {
     layout->addWidget(imageLabel);
 
     QLabel *carbonDetailsLabel = new QLabel(QString(
-                                                "🔌 <b>Electricity Emissions:</b> %1 kg CO₂/year<br>"
-                                                "🔥 <b>Gas Emissions:</b> %2 kg CO₂/year<br>"
-                                                "🌲 <b>Wood Emissions:</b> %3 kg CO₂/year<br>"
-                                                "<hr>🏡 <b>Total Home Carbon Footprint:</b> %4 kg CO₂/year<br><br>")
+                                                "🔌 <b>Electricity Emissions:</b> %1 kg CO₂/year/person<br>"
+                                                "🔥 <b>Gas Emissions:</b> %2 kg CO₂/year/person<br>"
+                                                "🌲 <b>Wood Emissions:</b> %3 kg CO₂/year/person<br>"
+                                                "<hr>🏡 <b>Total Home Carbon Footprint:</b> %4 kg CO₂/year/person<br><br>")
                                                 .arg(co2Electricity, 0, 'f', 2)
                                                 .arg(co2Gas, 0, 'f', 2)
                                                 .arg(co2Wood, 0, 'f', 2)

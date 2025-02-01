@@ -1,0 +1,15 @@
+# ninja log v6
+6	755	7600748479795630	CarbonFootprintCalculator_autogen/timestamp	24fbfacfc7d2efe2
+6	755	7600748479795630	CarbonFootprintCalculator_autogen/mocs_compilation.cpp	24fbfacfc7d2efe2
+6	755	7600748479795630	C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CarbonFootprintCalculator_autogen/timestamp	24fbfacfc7d2efe2
+6	755	7600748479795630	C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CarbonFootprintCalculator_autogen/mocs_compilation.cpp	24fbfacfc7d2efe2
+760	1251	7600748485265621	CarbonFootprintCalculator_autogen/EWIEGA46WW/qrc_resources.cpp	c50cdfa55ee845df
+760	1251	7600748485265621	C:/Users/Cristian/Desktop/Facultate/An II/POO/MyCarbon/CarbonFootprintCalculator/MyCARBON_APP/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CarbonFootprintCalculator_autogen/EWIEGA46WW/qrc_resources.cpp	c50cdfa55ee845df
+1260	3930	7600748485445652	CMakeFiles/CarbonFootprintCalculator.dir/credentialswindow.cpp.obj	969cbd526acaf1dc
+1264	4139	7600748485475660	CMakeFiles/CarbonFootprintCalculator.dir/info1.cpp.obj	877e8de98a74d16b
+1253	4385	7600748485365634	CMakeFiles/CarbonFootprintCalculator.dir/main.cpp.obj	9ab711d3f0235369
+1258	4455	7600748485415644	CMakeFiles/CarbonFootprintCalculator.dir/startwindow.cpp.obj	e21db2056b7adef2
+1251	4572	7600748485345630	CMakeFiles/CarbonFootprintCalculator.dir/CarbonFootprintCalculator_autogen/mocs_compilation.cpp.obj	405e0f09b696f966
+1255	7451	7600748485395628	CMakeFiles/CarbonFootprintCalculator.dir/mainwindow.cpp.obj	7748bfab0cb32833
+1267	17222	7600748485505663	CMakeFiles/CarbonFootprintCalculator.dir/CarbonFootprintCalculator_autogen/EWIEGA46WW/qrc_resources.cpp.obj	3d134c3f7d4e23fc
+17223	17524	7600748645062542	CarbonFootprintCalculator.exe	9491bcd5816a6c5d
