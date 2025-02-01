@@ -4,80 +4,121 @@
 #include <QScreen>
 
 InfoWindow::InfoWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent), currentImageIndex(0) // Inițializăm indexul imaginii
 {
     setMinimumSize(1000, 600);
+
+    // Lista de imagini de fundal
+    imagesList = {
+        ":/images/info_background1.jpg",
+        ":/images/info_background2.jpg",
+        ":/images/info_background3.jpg",
+        ":/images/info_background4.jpg",
+        ":/images/info_background5.jpg",
+        ":/images/info_background6.jpg",
+        ":/images/info_background7.jpg",
+        ":/images/info_background8.jpg"
+    };
 
     // Fundal
     backgroundLabel = new QLabel(this);
     backgroundLabel->setGeometry(0, 0, width(), height());
 
-    QPixmap background(":/images/info_background.png");
-    if (!background.isNull()) {
-        backgroundLabel->setPixmap(background.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-    }
+    // Buton "Previous" (Exit la prima imagine)
+    previousButton = new QPushButton("Exit", this);
+    connect(previousButton, &QPushButton::clicked, this, &InfoWindow::previousImage);
 
-    // Buton "Back"
-    backButton = new QPushButton("Back to Main Menu", this);
-    backButton->setFixedSize(150, 40);
-    backButton->setStyleSheet(
-        "QPushButton {"
-        "    background-color: #4CAF50;"
-        "    border: none;"
-        "    color: white;"
-        "    font-size: 16px;"
-        "    border-radius: 15px;"
-        "}"
-        "QPushButton:hover {"
-        "    background-color: #C70039;"
-        "}"
-        );
+    // Buton "Next" (Exit la ultima imagine)
+    nextButton = new QPushButton("Next", this);
+    connect(nextButton, &QPushButton::clicked, this, &InfoWindow::nextImage);
 
-    int buttonX = (width() - backButton->width()) / 2;
-    int buttonY = height() - backButton->height() - 60;
-    backButton->move(buttonX, buttonY);
-
-    connect(backButton, &QPushButton::clicked, this, &InfoWindow::backToStart);
-
+    // Actualizăm fundalul și butoanele
+    updateBackground();
     setWindowTitle("Information - My Carbon App");
 }
 
-void InfoWindow::resizeEvent(QResizeEvent *event) {
-    QMainWindow::resizeEvent(event);
-
-    // Redimensionare imagine fundal
-    QPixmap background(":/images/info_background.png");
+void InfoWindow::updateBackground() {
+    // Schimbăm imaginea de fundal conform `currentImageIndex`
+    QPixmap background(imagesList[currentImageIndex]);
     if (!background.isNull()) {
         backgroundLabel->setPixmap(background.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     }
     backgroundLabel->setGeometry(0, 0, width(), height());
 
-    // Ajustare dimensiune buton
-    int buttonWidth = std::max(200, width() / 6);
-    int buttonHeight = std::max(40, height() / 15);
-    backButton->setFixedSize(buttonWidth, buttonHeight);
+    // Gestionăm textul butoanelor
+    if (currentImageIndex == 0) {
+        previousButton->setText("Exit");
+    } else {
+        previousButton->setText("Previous");
+    }
 
-    QString styleSheet = QString(
-                             "QPushButton {"
-                             "    background-color: #4CAF50;"
-                             "    border: none;"
-                             "    color: white;"
-                             "    font-size: %1.5px;"
-                             "    border-radius: 20px;"
-                             "}"
-                             "QPushButton:hover {"
-                             "    background-color: #C70039;"
-                             "}"
-                             ).arg(std::max(14, buttonHeight / 2));
+    if (currentImageIndex == imagesList.size() - 1) {
+        nextButton->setText("Exit");
+    } else {
+        nextButton->setText("Next");
+    }
 
-    backButton->setStyleSheet(styleSheet);
-
-    // Repoziționare buton
-    int buttonX = (width() - backButton->width()) / 2;
-    int buttonY = height() - backButton->height() - 60;
-    backButton->move(buttonX, buttonY);
+    // Redimensionăm și repoziționăm butoanele
+    updateButtonPositions();
 }
 
-void InfoWindow::backToStart() {
-    close();
+void InfoWindow::updateButtonPositions() {
+    // Calculăm dimensiunea butoanelor în funcție de dimensiunea ferestrei
+    int buttonWidth = std::max(80, std::min(110, width() / 6)); // Min 150 px, Max 250 px
+    int buttonHeight = std::max(20, std::min(33, height() / 12)); // Min 40 px, Max 60 px
+
+    previousButton->setFixedSize(buttonWidth, buttonHeight);
+    nextButton->setFixedSize(buttonWidth, buttonHeight);
+
+    // Ajustăm fontul butoanelor în funcție de dimensiunea butonului
+    int fontSize = std::max(14, buttonHeight / 3);
+    previousButton->setStyleSheet(buttonStyle(fontSize));
+    nextButton->setStyleSheet(buttonStyle(fontSize));
+
+    // Calculăm poziția centralizată
+    int totalWidth = previousButton->width() + nextButton->width() + 20; // Spațiu de 20 px între butoane
+    int baseX = (width() - totalWidth) / 2;
+    int buttonY = height() - previousButton->height() - 50; // Poziție cu margine inferioară de 50 px
+
+    // Repoziționăm butoanele
+    previousButton->move(baseX, buttonY);
+    nextButton->move(baseX + previousButton->width() + 20, buttonY);
+}
+
+QString InfoWindow::buttonStyle(int fontSize) {
+    return QString(
+               "QPushButton {"
+               "    background-color: #4CAF50;"
+               "    border: none;"
+               "    color: white;"
+               "    font-size: 18px;"
+               "    border-radius: 15px;"
+               "    padding: 3px 3px 3px 3px;"
+               "}"
+               "QPushButton:hover {"
+               "    background-color: #45a049;"
+               "}").arg(fontSize);
+}
+
+void InfoWindow::nextImage() {
+    if (currentImageIndex < imagesList.size() - 1) {
+        currentImageIndex++;
+        updateBackground();
+    } else {
+        close(); // La ultima imagine, Next devine Exit
+    }
+}
+
+void InfoWindow::previousImage() {
+    if (currentImageIndex > 0) {
+        currentImageIndex--;
+        updateBackground();
+    } else {
+        close(); // La prima imagine, Previous devine Exit
+    }
+}
+
+void InfoWindow::resizeEvent(QResizeEvent *event) {
+    QMainWindow::resizeEvent(event);
+    updateBackground();
 }

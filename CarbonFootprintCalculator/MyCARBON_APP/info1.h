@@ -17,8 +17,18 @@ protected:
 private:
     QLabel *backgroundLabel;
     QPushButton *backButton;
+    QVector<QString> imagesList; // Stocăm căile către imagini
+    int currentImageIndex; // Indexul imaginii curente
+    QPushButton *previousButton; // ❗ Declarăm butonul Previous
+    QPushButton *nextButton;     // ❗ Declarăm butonul Next
+
+    void updateBackground(); // Actualizează imaginea și butoanele
+    void updateButtonPositions(); // Repoziționează și redimensionează butoanele
+    QString buttonStyle(int fontSize = 16); // Returnează stilul butoanelor
 
 private slots:
-    void backToStart();
+    //void backToStart();
+    void nextImage();
+    void previousImage();
 };
 #endif // INFO1_H

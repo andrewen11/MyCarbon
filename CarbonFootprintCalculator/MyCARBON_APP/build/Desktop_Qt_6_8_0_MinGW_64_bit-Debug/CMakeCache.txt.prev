@@ -313,37 +313,37 @@ QT_ADDITIONAL_PACKAGES_PREFIX_PATH:STRING=
 //Skip Qt Creator's package manager auto-setup
 QT_CREATOR_SKIP_PACKAGE_MANAGER_SETUP:BOOL=OFF
 
-//No help, variable specified on the command line.
+//The directory containing a CMake configuration file for QT.
 QT_DIR:PATH=D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6
 
 //No help, variable specified on the command line.
 QT_QMAKE_EXECUTABLE:FILEPATH=D:/Qt/6.8.0/mingw_64/bin/qmake.exe
 
-//No help, variable specified on the command line.
+//The directory containing a CMake configuration file for Qt6CoreTools.
 Qt6CoreTools_DIR:PATH=D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6CoreTools
 
-//No help, variable specified on the command line.
+//The directory containing a CMake configuration file for Qt6Core.
 Qt6Core_DIR:PATH=D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core
 
-//No help, variable specified on the command line.
+//The directory containing a CMake configuration file for Qt6EntryPointPrivate.
 Qt6EntryPointPrivate_DIR:PATH=D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6EntryPointPrivate
 
-//No help, variable specified on the command line.
+//The directory containing a CMake configuration file for Qt6GuiTools.
 Qt6GuiTools_DIR:PATH=D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6GuiTools
 
-//No help, variable specified on the command line.
+//The directory containing a CMake configuration file for Qt6Gui.
 Qt6Gui_DIR:PATH=D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Gui
 
-//No help, variable specified on the command line.
+//The directory containing a CMake configuration file for Qt6WidgetsTools.
 Qt6WidgetsTools_DIR:PATH=D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6WidgetsTools
 
-//No help, variable specified on the command line.
+//The directory containing a CMake configuration file for Qt6Widgets.
 Qt6Widgets_DIR:PATH=D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Widgets
 
-//No help, variable specified on the command line.
+//The directory containing a CMake configuration file for Qt6ZlibPrivate.
 Qt6ZlibPrivate_DIR:PATH=D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6ZlibPrivate
 
-//No help, variable specified on the command line.
+//The directory containing a CMake configuration file for Qt6.
 Qt6_DIR:PATH=D:/Qt/6.8.0/mingw_64/lib/cmake/Qt6
 
 //Path to a program.
@@ -358,7 +358,7 @@ Vulkan_INCLUDE_DIR:PATH=Vulkan_INCLUDE_DIR-NOTFOUND
 //Path to a library.
 Vulkan_LIBRARY:FILEPATH=Vulkan_LIBRARY-NOTFOUND
 
-//No help, variable specified on the command line.
+//Path to a program.
 WINDEPLOYQT_EXECUTABLE:FILEPATH=D:/Qt/6.8.0/mingw_64/bin/windeployqt.exe
 
 

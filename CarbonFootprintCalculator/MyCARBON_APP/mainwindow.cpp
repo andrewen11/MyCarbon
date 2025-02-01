@@ -1507,7 +1507,7 @@ void MainWindow::calculateDiet() {
     // ✅ Updated emission factors
     QMap<QString, double> foodFactors = {
         {"White Meat", 6.0},   // 🍗 Chicken & Turkey
-        {"Red Meat", 32.0},    // 🥩 Beef, Lamb & Pork (Arithmetic Mean)
+        {"Red Meat", 27.0},    // 🥩 Beef, Lamb & Pork (Arithmetic Mean)
         {"Fish", 6.0},         // 🐟 Fish
         {"Dairy", 3.2},        // 🥛 Dairy
         {"Vegetables", 2.0},   // 🥦 Vegetables
