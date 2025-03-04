@@ -1,7 +1,7 @@
 # MyCarbon
-## Repository for the upcoming project MyCarbon, a carbon footprint measurement, object-oriented app.
+## Repository for the C++ full stack project: MyCarbonAPP, a carbon footprint measurement, object-oriented app.
 ### Designed and developed by second-year students from the National University of Science and Technology "Politehnica" of Bucharest, Faculty of Automatic Control and Computer Science - System Engineering (Automatic Control) field.
-#### Languages and frameworks: C++; Qt Framework | OOP functionalities
+#### Frameworks: Qt (C++) Framework | OOP functionalities
 
 ### ROADMAP:
 ![screenshot](/Roadmap.png)
