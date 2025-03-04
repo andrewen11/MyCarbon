@@ -12,7 +12,7 @@
 ![screenshot](/'class diagram.png')
 
 ### SEQUENTIAL DIAGRAM (Used functionalities):
-![screenshot](/'sequential diagram.png')
+![screenshot](/"sequential diagram".png)
 
 ### UPDATES (DESCENDING ORDER):
 
