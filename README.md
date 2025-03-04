@@ -1,10 +1,20 @@
 # MyCarbon
 ## Repository for the upcoming project MyCarbon, a carbon footprint measurement, object-oriented app.
 ### Designed and developed by second-year students from the National University of Science and Technology "Politehnica" of Bucharest, Faculty of Automatic Control and Computer Science - System Engineering (Automatic Control) field.
-#### Languages and frameworks: C++; Qt Framework
+#### Languages and frameworks: C++; Qt Framework | OOP functionalities
 
 ### ROADMAP:
 ![screenshot](/Roadmap.png)
+
+### Opening the Application (.exe):  / MyCARBON_APP -> Application -> CarbonFootprintCalculator.exe
+
+### CLASS DIAGRAM (UML):
+![screenshot](/class diagram.png)
+
+### SEQUENTIAL DIAGRAM (Used functionalities):
+![screenshot](/sequential diagram.png)
+
+### UPDATES (DESCENDING ORDER):
 
 ### FINAL UPDATE - FEBRUARY 4, 2025 | FINAL VERSION
 - UI overhauled, according to the latest changes in terms of accessibilty, options and functionalities.
@@ -13,18 +23,18 @@
 - MyCarbon app officially complete, with all features functioning as intended.
 
 ### UPDATE 10 - FEBRUARY 1, 2025
-#### ADJUSTEMENTS AFTER THE FEEDBACK SESSION:
+#### ADJUSTMENTS AFTER THE FEEDBACK SESSION:
 - Added a "Help" button 
 - Thorough optimization and successful completion of all testing stages.
 Ready for deployment with no critical issues.
 Project successfully concluded and ready for public release!
 
-### UPDATE 9 - JANUARY 25, 2025 | DEMO VERSION
+### UPDATE 9 - JANUARY 15, 2025 | DEMO VERSION
 - UI elements refined for clarity and functionality, with layout adjustments finalized.
 - Final UI polishing underway, especially for settings menu.
 - App runs smoothly under all tested scenarios, including large datasets.
 - Home page updates: new country selection mode available (depending on the selected country, the given emission factors may be different)
-#### {!!!} FEEDBACK - 26th February 2025 | DEMO VERSION
+#### {!!!} FEEDBACK - 16th January 2025 | DEMO VERSION
 
 ### UPDATE 8 - DECEMBER 21, 2025
 - Full system testing began as planned, with smooth handling of general and most exceptional cases.
@@ -36,7 +46,7 @@ Project successfully concluded and ready for public release!
 - Individual page revamped: the waste management section is now redesigned by adding more complex data processing for disposal methods (incineration, landfill, recycling, etc).
 - One brainstorming session held, focusing on user experience and efficiency improvements.
 - Core development at 90-95% completion, with minor tweaks needed for data synchronization across modules.
-- Upcoming Milestone: Full system test preparation for January 20, 2025 and Diet updates.
+- Upcoming Milestone: Full system test preparation for January 15, 2025 and Diet updates.
 
 ### UPDATE 6 - DECEMBER 3, 2024
 - A major brainstorming session was held on November 25, accompanied by three mini-sessions for testing and syncing data with new features.
