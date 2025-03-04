@@ -12,7 +12,7 @@
 ![screenshot1](/class%20diagram.png)
 
 ### SEQUENTIAL DIAGRAM (Used functionalities):
-![screenshot]2(/"sequential%20diagram".png)
+![screenshot2](/sequential%20diagram.png)
 
 ### UPDATES (DESCENDING ORDER):
 
