@@ -1,6 +1,10 @@
 # MyCarbon
 ## Repository for the upcoming project MyCarbon, a carbon footprint measurement, object-oriented app.
 ### Designed and developed by second-year students from the National University of Science and Technology "Politehnica" of Bucharest, Faculty of Automatic Control and Computer Science - System Engineering (Automatic Control) field.
+#### Languages and frameworks: C++; Qt Framework
+
+### ROADMAP:
+![screenshot](/Roadmap.png)
 
 ### FINAL UPDATE - FEBRUARY 4, 2025 | FINAL VERSION
 - UI overhauled, according to the latest changes in terms of accessibilty, options and functionalities.
