@@ -9,10 +9,10 @@
 ### Opening the Application (.exe):  / MyCARBON_APP -> Application -> CarbonFootprintCalculator.exe
 
 ### CLASS DIAGRAM (UML):
-![screenshot](/'class diagram.png')
+![screenshot1](/class%20diagram.png)
 
 ### SEQUENTIAL DIAGRAM (Used functionalities):
-![screenshot](/"sequential diagram".png)
+![screenshot]2(/"sequential%20diagram".png)
 
 ### UPDATES (DESCENDING ORDER):
 
